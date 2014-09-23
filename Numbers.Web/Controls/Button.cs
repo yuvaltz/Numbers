@@ -141,7 +141,7 @@ namespace Numbers.Web.Controls
 
             IsChecked = !IsChecked;
             overlayAnimation.Start();
-            overlay.HtmlElement.Style["transformOrigin"] = String.Format("{0}px {1}px", (e as MouseEvent).ClientX, (e as MouseEvent).ClientY);
+            overlay.HtmlElement.Style["transformOrigin"] = String.Format("{0}px {1}px", (e as MouseEvent).LayerX, (e as MouseEvent).LayerY);
         }
 
         private void OnIsCheckChanged()
