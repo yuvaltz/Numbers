@@ -127,12 +127,12 @@ namespace Numbers.Web.Views
 
         private static string GetLabelSizeClass(string text)
         {
-            if (text.Length <= 4)
+            if (text.Length < 4)
             {
                 return "medium";
             }
 
-            if (text.Length <= 5)
+            if (text.Length < 5)
             {
                 return "small";
             }
