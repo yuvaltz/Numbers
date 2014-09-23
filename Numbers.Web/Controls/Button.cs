@@ -45,6 +45,8 @@ namespace Numbers.Web.Controls
                 HtmlElement.ClassList.Add(className);
             }
 
+            HtmlElement.SetAttribute("data-is-checked", IsChecked.ToString());
+
             Shadow = new Control("button-shadow");
             overlay = new Control("button-overlay");
 
