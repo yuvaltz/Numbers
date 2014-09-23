@@ -54,24 +54,19 @@ namespace Numbers.Web.Controls
 
             HtmlElement.AddEventListener("mousedown", OnMouseDown, false);
 
-            IValueBounds transformValueBounds = new ScaleValueBounds(1, 1.06);
-            IValueBounds marginValueBounds = new PixelValueBounds(0, 4);
+            IValueBounds transformValueBounds = new ScaleValueBounds(1, 1.08);
             IValueBounds opacityValueBounds = new DoubleValueBounds(0, 1);
 
             TransitionTiming transitionTiming = new TransitionTiming(CheckAnimationDurationMilliseconds);
 
             checkedAnimation = new ParallelTransition(
                 new MultiplePropertyTransition(HtmlElement, new [] { "transform", "-webkit-transform" }, transformValueBounds, transitionTiming),
-                new Transition(HtmlElement, "marginTop", marginValueBounds, transitionTiming),
                 new MultiplePropertyTransition(Shadow.HtmlElement, new[] { "transform", "-webkit-transform" }, transformValueBounds, transitionTiming),
-                new Transition(Shadow.HtmlElement, "marginTop", marginValueBounds, transitionTiming),
                 new Transition(Shadow.HtmlElement, "opacity", opacityValueBounds, transitionTiming));
 
             uncheckedAnimation = new ParallelTransition(
                 new MultiplePropertyTransition(HtmlElement, new [] { "transform", "-webkit-transform" }, transformValueBounds.Reverse(), transitionTiming),
-                new Transition(HtmlElement, "marginTop", marginValueBounds.Reverse(), transitionTiming),
                 new MultiplePropertyTransition(Shadow.HtmlElement, new[] { "transform", "-webkit-transform" }, transformValueBounds.Reverse(), transitionTiming),
-                new Transition(Shadow.HtmlElement, "marginTop", marginValueBounds.Reverse(), transitionTiming),
                 new Transition(Shadow.HtmlElement, "opacity", opacityValueBounds.Reverse(), transitionTiming));
 
             overlayAnimation = new ParallelTransition(
@@ -85,10 +80,8 @@ namespace Numbers.Web.Controls
             {
                 HtmlElement.Style["transform"] = transformValueBounds.FormattedEndValue;
                 HtmlElement.Style["-webkit-transform"] = transformValueBounds.FormattedEndValue;
-                HtmlElement.Style["marginTop"] = marginValueBounds.FormattedEndValue;
                 Shadow.HtmlElement.Style["transform"] = transformValueBounds.FormattedEndValue;
                 Shadow.HtmlElement.Style["-webkit-transform"] = transformValueBounds.FormattedEndValue;
-                Shadow.HtmlElement.Style["marginTop"] = marginValueBounds.FormattedEndValue;
             }
         }
 
@@ -115,9 +108,9 @@ namespace Numbers.Web.Controls
 
         public void StartScaleOutAnimation2()
         {
-            ITransition transformTransition = new MultiplePropertyTransition(HtmlElement, new[] { "transform", "-webkit-transform" }, new ScaleValueBounds(1.4, IsChecked ? 1.06 : 1), new TransitionTiming(400));
+            ITransition transformTransition = new MultiplePropertyTransition(HtmlElement, new[] { "transform", "-webkit-transform" }, new ScaleValueBounds(1.4, IsChecked ? 1.08 : 1), new TransitionTiming(400));
             ITransition opacityTransition = new Transition(HtmlElement, "opacity", new DoubleValueBounds(0, 1), new TransitionTiming(400));
-            ITransition shadowTransformTransition = new MultiplePropertyTransition(Shadow.HtmlElement, new[] { "transform", "-webkit-transform" }, new ScaleValueBounds(1.4, IsChecked ? 1.06 : 1), new TransitionTiming(400));
+            ITransition shadowTransformTransition = new MultiplePropertyTransition(Shadow.HtmlElement, new[] { "transform", "-webkit-transform" }, new ScaleValueBounds(1.4, IsChecked ? 1.08 : 1), new TransitionTiming(400));
             ITransition shadowOpacityTransition = new Transition(Shadow.HtmlElement, "opacity", new DoubleValueBounds(0, 1), new TransitionTiming(400));
 
             ITransition scaleOutAnimation = IsChecked ?
