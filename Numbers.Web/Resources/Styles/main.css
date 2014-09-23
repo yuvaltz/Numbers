@@ -1,0 +1,190 @@
+div
+{
+    -webkit-tap-highlight-color: transparent;
+}
+
+body
+{
+    position: absolute;
+    margin: 0px;
+    font-family: 'Roboto', sans-serif;
+    background: #fafafa;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+div.root
+{
+    position: fixed;
+    width: 600px;
+    height: 400px;
+}
+
+div.frame
+{
+    overflow: hidden;
+    position: absolute;
+    width: 600px;
+    background: #f5f5f5;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+}	
+
+div.frame-shadow
+{
+    position: absolute;
+    width: 600px;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    box-shadow: 0px 4px 8px -2px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+div.frame
+{
+    height: 344px;
+    z-index: 3;
+}
+
+div.label.target-label
+{
+    position: absolute;
+    font-size: 48px;
+    color: rgba(66, 66, 66, 0.87);
+    text-align: center;
+    line-height: 58px;
+    border-top: 2px solid #bdbdbd;
+    -webkit-border-top: 2px solid #bdbdbd;
+    top: 280px;
+    height: 64px;
+    width: 600px;
+    background: #f5f5f5;
+    cursor: default;
+    opacity: 0;
+}
+
+div.frame + div.frame-shadow
+{
+    height: 344px;
+}
+
+div.toolbar
+{
+    position: absolute;
+    width: 600px;
+    height: 64px;
+    background: #e0e0e0;
+    border-radius: 2px 2px 0px 0px;
+    -webkit-border-radius: 2px 2px 0px 0px;
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.5);
+    z-index: 5;
+}
+
+div.numbers-panel
+{
+    position: absolute;
+    left: 0px;
+    top: 80px;
+    width: 600px;
+    height: 100px;
+    z-index: 3;
+}
+
+div.operators-panel
+{
+    position: absolute;
+    left: 0px;
+    top: 176px;
+    width: 600px;
+    height: 100px;
+    z-index: 1;
+}
+
+div.target-background1,
+div.target-background2,
+div.target-background-overlay1,
+div.target-background-overlay2
+{
+    position: absolute;
+    left: 260px;
+    width: 80px;
+    height: 80px;
+    visibility: hidden;
+    cursor: pointer;
+}
+
+div.target-background1,
+div.target-background2
+{
+    top: 80px;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    background: #616161;
+    z-index: 2;
+}
+
+div.target-background1
+{
+    opacity: 0.4;
+}
+
+div.target-background-overlay1,
+div.target-background-overlay2
+{
+    top: 162px;
+    border-radius: 40px;
+    -webkit-border-radius: 40px;
+    background: #f5f5f5;
+    z-index: 4;
+    opacity: 0;
+}
+
+div.toolbar-button.new
+{
+    left: 6px;
+}
+
+div.toolbar-button.hint
+{
+    left: 488px;
+    opacity: 0;
+}
+
+div.toolbar-button.undo
+{
+    left: 542px;
+    opacity: 0;
+}
+
+div.label
+{
+    cursor: default;
+}
+
+div.label.medium
+{
+    font-size: 48px;
+}
+
+div.label.small
+{
+    font-size: 36px;
+}
+
+div.label.extra-small
+{
+    font-size: 24px;
+}
+
+div.header
+{
+    font-family: 'Lobster', sans-serif;
+    font-size: 44px;
+    line-height: 64px;
+    text-align: center;
+    color: rgba(66, 66, 66, 0.54);
+}

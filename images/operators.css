@@ -1,0 +1,28 @@
+div.operator,
+div.operator div.button-content,
+div.operator + div.button-shadow
+{
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+}
+
+div.operator div.button-content
+{
+    font-size: 48px;
+    color: rgba(0, 0, 0, 0.4);
+    text-align: center;
+    line-height: 74px;
+}
+
+div.operator div.button-overlay
+{
+    border-radius: 40px;
+    -webkit-border-radius: 40px;
+}
+
+div.operator,
+div.operator + div.button-shadow
+{
+    background: #e0e0e0;
+}

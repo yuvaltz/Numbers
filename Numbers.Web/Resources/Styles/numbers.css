@@ -1,0 +1,68 @@
+div.number,
+div.number div.button-content,
+div.number + div.button-shadow
+{
+    width: 80px;
+    height: 80px;
+    border-radius: 2px;
+}
+
+div.number div.button-content
+{
+    color: rgba(255, 255, 255, 0.87);
+    text-align: center;
+    line-height: 74px;
+}
+
+div.number div.button-overlay
+{
+    border-radius: 40px;
+    -webkit-border-radius: 40px;
+}
+
+div.level1,
+div.level1 + div.button-shadow
+{
+    background: #03a9f4;
+}
+
+div.level2,
+div.level2 + div.button-shadow
+{
+    background: #ff5177;
+}
+
+div.level3,
+div.level3 + div.button-shadow
+{
+    background: #12c700;
+}
+
+div.level4,
+div.level4 + div.button-shadow
+{
+    background: #ffb300;
+}
+
+div.level5,
+div.level5 + div.button-shadow
+{
+    background: #e040fb;
+}
+
+div.level6,
+div.level6 + div.button-shadow
+{
+    background: #e51c23;
+}
+
+div.target,
+div.target + div.button-shadow
+{
+    background: #616161;
+}
+
+div.target div.button-content
+{
+    color: #ffd600;
+}
