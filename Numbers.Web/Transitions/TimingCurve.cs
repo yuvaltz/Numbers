@@ -49,7 +49,7 @@ namespace Numbers.Web.Transitions
 
             FindCurvePoint((currentTiming, currentProgress) => currentProgress.CompareTo(progress), out resultTiming, out resultProgress);
 
-            return resultProgress;
+            return resultTiming;
         }
 
         private void FindCurvePoint(Func<double, double, int> comparer, out double x, out double y)
