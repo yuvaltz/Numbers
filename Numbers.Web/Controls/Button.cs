@@ -150,7 +150,7 @@ namespace Numbers.Web.Controls
                 uncheckedAnimation.Start();
             }
 
-            Window.SetTimeout(() => HtmlElement.SetAttribute("data-is-checked", IsChecked.ToString()), 200);
+            HtmlElement.SetAttribute("data-is-checked", IsChecked.ToString());
         }
 
         private void RaiseIsCheckedChanged()
