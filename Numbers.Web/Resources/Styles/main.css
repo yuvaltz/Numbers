@@ -186,5 +186,6 @@ div.header
     font-size: 44px;
     line-height: 64px;
     text-align: center;
-    color: rgba(66, 66, 66, 0.54);
+    color: #424242;
+    opacity: 0.54;
 }
