@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace Numbers.Web
 {
     public enum LevelChange { Easier, Same, Harder }
@@ -8,4 +9,4 @@ namespace Numbers.Web
         void NewGame(LevelChange levelChange);
         void RestorePreviousGame();
     }
-}
+}

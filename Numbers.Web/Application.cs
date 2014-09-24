@@ -73,7 +73,6 @@ namespace Numbers.Web
 
         public void NewGame(LevelChange levelChange)
         {
-            Console.WriteLine("new game");
             if (!customGame)
             {
                 if (levelChange == LevelChange.Easier)

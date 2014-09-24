@@ -8,8 +8,8 @@ namespace Numbers.Web
     {
         private const int MinimumTarget = 40;
         private const int MaximumTarget = 401;
-        private const int TargetMean = 200;
-        private const int TargetMeanSd = 100;
+        private const int TargetMean = 150;
+        private const int TargetMeanSd = 80;
 
         private static readonly Random Random = new Random();
 
