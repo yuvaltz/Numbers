@@ -67,6 +67,7 @@
     <Compile Include="Transitions\TimingCurve.cs" />
     <Compile Include="Transitions\TransitionTiming.cs" />
     <Compile Include="Transitions\ValueBounds.cs" />
+    <Compile Include="ViewModels\CyclicSelectionBehavior.cs" />
     <Compile Include="ViewModels\GameViewModel.cs" />
     <Compile Include="ViewModels\NumberViewModel.cs" />
     <Compile Include="ViewModels\OperatorViewModel.cs" />

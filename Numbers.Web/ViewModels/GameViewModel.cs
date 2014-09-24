@@ -15,8 +15,6 @@ namespace Numbers.Web.ViewModels
         public IEnumerable<OperatorViewModel> Operators { get; private set; }
         public int TargetValue { get { return model.TargetValue; } }
 
-        private List<NumberViewModel> selectedNumbers;
-
         private int stepsCount;
         private bool hintUsed;
         private IGameHost host;
@@ -26,10 +24,7 @@ namespace Numbers.Web.ViewModels
             this.model = model;
             this.host = host;
 
-            selectedNumbers = new List<NumberViewModel>();
-            
             Numbers = new ObservableCollection<NumberViewModel>();
-            Numbers.CollectionChanged += OnItemsCollectionChanged;
 
             foreach (Number number in model.CurrentNumbers)
             {
@@ -44,10 +39,11 @@ namespace Numbers.Web.ViewModels
                 new OperatorViewModel("\u00F7", Number.Divide),
             };
 
-            foreach (OperatorViewModel operatorViewModel in Operators)
-            {
-                operatorViewModel.IsSelectedChanged += OnOperatorIsSelectedChanged;
-            }
+            CyclicSelectionBehavior numbersSelectionBehavior = new CyclicSelectionBehavior(Numbers, 2);
+            CyclicSelectionBehavior operatorsSelectionBehavior = new CyclicSelectionBehavior(Operators, 1);
+
+            numbersSelectionBehavior.SelectionChanged += (sender, e) => TryCalculate();
+            operatorsSelectionBehavior.SelectionChanged += (sender, e) => TryCalculate();
         }
 
         public void Undo()
@@ -67,23 +63,10 @@ namespace Numbers.Web.ViewModels
 
             Numbers.Remove(Numbers.FirstOrDefault(vm => vm.Model == number));
 
-            foreach (OperatorViewModel operatorViewModel in Operators)
-            {
-                operatorViewModel.IsSelected = false;
-            }
+            InsertNumber(new NumberViewModel(number.Operand1, source: CreationSource.Undo));
+            InsertNumber(new NumberViewModel(number.Operand2, source: CreationSource.Undo));
 
-            foreach (NumberViewModel numberViewModel in Numbers)
-            {
-                numberViewModel.IsSelected = false;
-            }
-
-            selectedNumbers.Clear();
-
-            NumberViewModel operand1ViewModel = new NumberViewModel(number.Operand1, source: CreationSource.Undo);
-            NumberViewModel operand2ViewModel = new NumberViewModel(number.Operand2, source: CreationSource.Undo);
-
-            InsertNumber(operand1ViewModel);
-            InsertNumber(operand2ViewModel);
+            ClearSelection();
         }
 
         public void Hint()
@@ -120,58 +103,6 @@ namespace Numbers.Web.ViewModels
             host.NewGame(levelChange);
         }
 
-        private void OnItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                (e.Item as NumberViewModel).IsSelectedChanged -= OnNumberIsSelectedChanged;
-            }
-            else if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                (e.Item as NumberViewModel).IsSelectedChanged += OnNumberIsSelectedChanged;
-            }
-            else
-            {
-                throw new Exception("Unsupported collection action");
-            }
-        }
-
-        private void OnNumberIsSelectedChanged(object sender, EventArgs e)
-        {
-            NumberViewModel numberViewModel = sender as NumberViewModel;
-
-            if (numberViewModel.IsSelected)
-            {
-                selectedNumbers.Add(numberViewModel);
-
-                if (selectedNumbers.Count > 2)
-                {
-                    selectedNumbers[0].IsSelected = false;
-                }
-            }
-            else
-            {
-                selectedNumbers.Remove(numberViewModel);
-            }
-
-            TryCalculate();
-        }
-
-        private void OnOperatorIsSelectedChanged(object sender, EventArgs e)
-        {
-            OperatorViewModel senderOperatorViewModel = sender as OperatorViewModel;
-
-            if (senderOperatorViewModel.IsSelected)
-            {
-                foreach (OperatorViewModel operatorViewModel in Operators)
-                {
-                    operatorViewModel.IsSelected = operatorViewModel == senderOperatorViewModel;
-                }
-            }
-
-            TryCalculate();
-        }
-
         private void TryCalculate()
         {
             OperatorViewModel operatorViewModel = Operators.Where(vm => vm.IsSelected).FirstOrDefault();
@@ -199,26 +130,10 @@ namespace Numbers.Web.ViewModels
             Numbers.Remove(Numbers.FirstOrDefault(vm => vm.Model == number.Operand1));
             Numbers.Remove(Numbers.FirstOrDefault(vm => vm.Model == number.Operand2));
 
-            foreach (OperatorViewModel operatorViewModel in Operators)
-            {
-                operatorViewModel.IsSelected = false;
-            }
-
-            foreach (NumberViewModel numberViewModel in Numbers)
-            {
-                numberViewModel.IsSelected = false;
-            }
-
-            selectedNumbers.Clear();
+            ClearSelection();
 
             NumberViewModel resultViewModel = new NumberViewModel(number, Numbers.Count == 0 && number.Value == TargetValue, CreationSource.Result);
-
             resultViewModel.IsSelected = Numbers.Count > 0;
-
-            if (resultViewModel.IsSelected)
-            {
-                selectedNumbers.Add(resultViewModel);
-            }
 
             InsertNumber(resultViewModel);
 
@@ -239,6 +154,19 @@ namespace Numbers.Web.ViewModels
             else
             {
                 Numbers.Insert(index, numberViewModel);
+            }
+        }
+
+        private void ClearSelection()
+        {
+            foreach (OperatorViewModel operatorViewModel in Operators)
+            {
+                operatorViewModel.IsSelected = false;
+            }
+
+            foreach (NumberViewModel numberViewModel in Numbers)
+            {
+                numberViewModel.IsSelected = false;
             }
         }
 
