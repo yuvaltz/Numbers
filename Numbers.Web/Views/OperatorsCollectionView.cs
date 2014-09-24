@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Html;
 using System.Linq;
 using Numbers.Web.Controls;
@@ -53,7 +54,7 @@ namespace Numbers.Web.Views
 
         private static Button CreateButton(OperatorViewModel operatorViewModel)
         {
-            Label label = new Label { Text = operatorViewModel.Header };
+            Label label = new Label { Text = GetOperatorHeader(operatorViewModel.Operator) };
             label.HtmlElement.ClassList.Add("button-content");
 
             Button button = new Button(operatorViewModel.IsSelected, "operator") { label };
@@ -61,6 +62,18 @@ namespace Numbers.Web.Views
             button.IsCheckedChanged += (sender, e) => operatorViewModel.IsSelected = button.IsChecked;
 
             return button;
+        }
+
+        private static string GetOperatorHeader(Operator @operator)
+        {
+            switch (@operator)
+            {
+                case Operator.Add: return "+";
+                case Operator.Subtract: return "-";
+                case Operator.Multiply: return "\u00D7";
+                case Operator.Divide: return "\u00F7";
+                default: throw new Exception("Operator is not supported");
+            }
         }
     }
 }

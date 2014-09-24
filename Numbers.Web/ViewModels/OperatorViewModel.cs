@@ -4,13 +4,13 @@ namespace Numbers.Web.ViewModels
 {
     public class OperatorViewModel : SelectableViewModel
     {
-        public string Header { get; private set; }
+        public Operator Operator { get; private set; }
 
         private Func<Number, Number, Number> calculation;
 
-        public OperatorViewModel(string header, Func<Number, Number, Number> calculation)
+        public OperatorViewModel(Operator @operator, Func<Number, Number, Number> calculation)
         {
-            this.Header = header;
+            this.Operator = @operator;
             this.calculation = calculation;
         }
 

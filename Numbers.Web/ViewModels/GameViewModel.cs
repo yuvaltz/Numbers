@@ -33,10 +33,10 @@ namespace Numbers.Web.ViewModels
 
             Operators = new[]
             {
-                new OperatorViewModel("+", Number.Add),
-                new OperatorViewModel("-", Number.Subtract),
-                new OperatorViewModel("\u00D7", Number.Multiply),
-                new OperatorViewModel("\u00F7", Number.Divide),
+                new OperatorViewModel(Operator.Add, Number.Add),
+                new OperatorViewModel(Operator.Subtract, Number.Subtract),
+                new OperatorViewModel(Operator.Multiply, Number.Multiply),
+                new OperatorViewModel(Operator.Divide, Number.Divide),
             };
 
             CyclicSelectionBehavior numbersSelectionBehavior = new CyclicSelectionBehavior(Numbers, 2);
