@@ -38,7 +38,7 @@ namespace Numbers.Web.Views
             foreach (Button button in operatorsButtons)
             {
                 int start = totalAppearDurationMilliseconds * button.Left / OperatorsCollectionWidth;
-                Window.SetTimeout(button.StartScaleInAnimation, start);
+                Window.SetTimeout(button.StartAppearAnimation, start);
             }
         }
 
@@ -47,7 +47,7 @@ namespace Numbers.Web.Views
             foreach (Button button in operatorsButtons)
             {
                 int start = totalDisappearDurationMilliseconds * button.Left / OperatorsCollectionWidth;
-                Window.SetTimeout(button.StartScaleOutAnimation, start);
+                Window.SetTimeout(button.StartDisappearAnimation, start);
             }
         }
 

@@ -85,7 +85,7 @@ namespace Numbers.Web.Controls
             }
         }
 
-        public void StartScaleInAnimation()
+        public void StartAppearAnimation()
         {
             ITransition animation = new ParallelTransition(
                 new MultiplePropertyTransition(HtmlElement, new[] { "transform", "-webkit-transform" }, new ScaleValueBounds(0, 1), new TransitionTiming(400)),
@@ -95,7 +95,7 @@ namespace Numbers.Web.Controls
             animation.Start();
         }
 
-        public void StartScaleOutAnimation()
+        public void StartDisappearAnimation()
         {
             ITransition animation = new ParallelTransition(
                 new Keyframe(Shadow.HtmlElement, "visibility", "hidden"),
@@ -106,7 +106,7 @@ namespace Numbers.Web.Controls
             animation.Start();
         }
 
-        public void StartScaleOutAnimation2()
+        public void StartCreateAnimation()
         {
             ITransition transformTransition = new MultiplePropertyTransition(HtmlElement, new[] { "transform", "-webkit-transform" }, new ScaleValueBounds(1.4, IsChecked ? 1.08 : 1), new TransitionTiming(400));
             ITransition opacityTransition = new Transition(HtmlElement, "opacity", new DoubleValueBounds(0, 1), new TransitionTiming(400));

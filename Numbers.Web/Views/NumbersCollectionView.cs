@@ -34,7 +34,7 @@ namespace Numbers.Web.Views
             foreach (Button button in numbersButtons)
             {
                 int start = totalAppearDurationMilliseconds * button.Left / NumbersCollectionWidth;
-                Window.SetTimeout(button.StartScaleInAnimation, start);
+                Window.SetTimeout(button.StartAppearAnimation, start);
             }
         }
 
@@ -43,7 +43,7 @@ namespace Numbers.Web.Views
             foreach (Button button in numbersButtons)
             {
                 int start = totalDisappearDurationMilliseconds * button.Left / NumbersCollectionWidth;
-                Window.SetTimeout(button.StartScaleOutAnimation, start);
+                Window.SetTimeout(button.StartDisappearAnimation, start);
             }
         }
 
@@ -114,7 +114,7 @@ namespace Numbers.Web.Views
 
             if (numberViewModel.Source == CreationSource.Result)
             {
-                button.StartScaleOutAnimation2();
+                button.StartCreateAnimation();
             }
 
             return button;
