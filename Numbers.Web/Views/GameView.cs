@@ -50,7 +50,7 @@ namespace Numbers.Web.Views
             Control targetLabel = new Label("target-label") { Text = viewModel.TargetValue.ToString() };
 
             newGameButton = new ToolbarButton("new", "ic_action_new_dark.png", NewGame) { IsEnabled = false };
-            hintButton = new ToolbarButton("hint", "ic_action_help_dark.png", viewModel.Hint);
+            hintButton = new ToolbarButton("hint", "ic_action_help_dark.png", SelectHint, CalculateHint);
             undoButton = new ToolbarButton("undo", "ic_action_undo_dark.png", viewModel.Undo);
 
             AppendChild(new Control("frame")
@@ -73,12 +73,12 @@ namespace Numbers.Web.Views
 
             AppendChild(new Control("frame-shadow"));
 
+            viewModel.SelectionChanged += OnSelectionChanged;
             viewModel.Solved += OnSolved;
 
             targetLabelAppearAnimation = new ParallelTransition(
                 new Transition(targetLabel.HtmlElement, "top", new PixelValueBounds(340, 280), new TransitionTiming(800)),
                 new Transition(targetLabel.HtmlElement, "opacity", new DoubleValueBounds(0, 1), new TransitionTiming(800)));
-
 
             targetLabelDisappearAnimation = new ParallelTransition(
                 new Transition(targetLabel.HtmlElement, "top", new PixelValueBounds(280, 340), new TransitionTiming(800)),
@@ -126,6 +126,14 @@ namespace Numbers.Web.Views
                 new MultiplePropertyTransition(targetBackgroundOverlay2.HtmlElement, new[] { "transform", "-webkit-transform" }, new ScaleValueBounds(.1, 10), new TransitionTiming(1800), 200));
         }
 
+        private void OnSelectionChanged(object sender, EventArgs e)
+        {
+            if (!hintButton.IsPressed)
+            {
+                viewModel.TryCalculate();
+            }
+        }
+
         public void Run()
         {
             numbersCollectionView.StartAppearAnimation(600);
@@ -158,6 +166,25 @@ namespace Numbers.Web.Views
                 operatorsCollectionView.StartDisappearAnimation(600);
                 Window.SetTimeout(viewModel.NewGame, 1000);
             }
+        }
+
+        private void SelectHint()
+        {
+            Number number = viewModel.Hint();
+
+            if (number != null)
+            {
+                viewModel.SetSelection(number);
+            }
+            else
+            {
+                viewModel.Undo();
+            }
+        }
+
+        private void CalculateHint()
+        {
+            Window.SetTimeout(viewModel.TryCalculate, 100);
         }
 
         private void OnSolved(object sender, EventArgs e)

@@ -10,6 +10,7 @@ namespace Numbers.Web.ViewModels
         private Game model;
 
         public event EventHandler Solved;
+        public event EventHandler SelectionChanged;
 
         public ObservableCollection<NumberViewModel> Numbers { get; private set; }
         public IEnumerable<OperatorViewModel> Operators { get; private set; }
@@ -42,8 +43,8 @@ namespace Numbers.Web.ViewModels
             CyclicSelectionBehavior numbersSelectionBehavior = new CyclicSelectionBehavior(Numbers, 2);
             CyclicSelectionBehavior operatorsSelectionBehavior = new CyclicSelectionBehavior(Operators, 1);
 
-            numbersSelectionBehavior.SelectionChanged += (sender, e) => TryCalculate();
-            operatorsSelectionBehavior.SelectionChanged += (sender, e) => TryCalculate();
+            numbersSelectionBehavior.SelectionChanged += (sender, e) => RaiseSelectionChanged();
+            operatorsSelectionBehavior.SelectionChanged += (sender, e) => RaiseSelectionChanged();
         }
 
         public void Undo()
@@ -69,18 +70,24 @@ namespace Numbers.Web.ViewModels
             ClearSelection();
         }
 
-        public void Hint()
+        public Number Hint()
         {
             Number number = model.Hint();
             hintUsed = true;
 
-            if (number != null)
+            return number;
+        }
+
+        public void SetSelection(Number number)
+        {
+            foreach (NumberViewModel numberViewModel in Numbers)
             {
-                Push(number);
+                numberViewModel.IsSelected = numberViewModel.Model == number.Operand1 || numberViewModel.Model == number.Operand2;
             }
-            else
+
+            foreach (OperatorViewModel operatorViewModel in Operators)
             {
-                Undo();
+                operatorViewModel.IsSelected = operatorViewModel.Operator == number.Operator;
             }
         }
 
@@ -103,7 +110,7 @@ namespace Numbers.Web.ViewModels
             host.NewGame(levelChange);
         }
 
-        private void TryCalculate()
+        public void TryCalculate()
         {
             OperatorViewModel operatorViewModel = Operators.Where(vm => vm.IsSelected).FirstOrDefault();
             NumberViewModel[] numberViewModels = Numbers.Count() == 2 ? Numbers.ToArray() : Numbers.Where(vm => vm.IsSelected).ToArray();
@@ -175,6 +182,14 @@ namespace Numbers.Web.ViewModels
             if (Solved != null)
             {
                 Solved(this, EventArgs.Empty);
+            }
+        }
+
+        private void RaiseSelectionChanged()
+        {
+            if (SelectionChanged != null)
+            {
+                SelectionChanged(this, EventArgs.Empty);
             }
         }
     }
