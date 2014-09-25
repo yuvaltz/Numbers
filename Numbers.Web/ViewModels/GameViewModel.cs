@@ -17,7 +17,7 @@ namespace Numbers.Web.ViewModels
         public int TargetValue { get { return model.TargetValue; } }
 
         private int stepsCount;
-        private bool hintUsed;
+        private int hintCount;
         private IGameHost host;
 
         public GameViewModel(Game model, IGameHost host)
@@ -73,7 +73,7 @@ namespace Numbers.Web.ViewModels
         public Number Hint()
         {
             Number number = model.Hint();
-            hintUsed = true;
+            hintCount++;
 
             return number;
         }
@@ -97,11 +97,11 @@ namespace Numbers.Web.ViewModels
 
             if (stepsCount > 0)
             {
-                if (!model.IsSolved)
+                if (!model.IsSolved || hintCount > 3)
                 {
                     levelChange = LevelChange.Easier;
                 }
-                else if (!hintUsed && stepsCount < 20)
+                else if (hintCount == 0 && stepsCount < 20)
                 {
                     levelChange = LevelChange.Harder;
                 }
