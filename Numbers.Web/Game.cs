@@ -40,6 +40,11 @@ namespace Numbers.Web
             CurrentNumbers = CurrentNumbers.
                 Where(number => number != result.Operand1 && number != result.Operand2).
                 Concat(new[] { result }).ToArray();
+
+            if (IsSolved)
+            {
+                Console.WriteLine(String.Format("Solved {0}={1}", result.Value, result.ToString(false, true)));
+            }
         }
 
         public Number Pop()
