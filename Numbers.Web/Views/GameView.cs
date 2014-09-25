@@ -13,6 +13,7 @@ namespace Numbers.Web.Views
 
         private GameViewModel viewModel;
 
+        private ToolbarView toolbarView;
         private NumbersCollectionView numbersCollectionView;
         private OperatorsCollectionView operatorsCollectionView;
 
@@ -20,13 +21,6 @@ namespace Numbers.Web.Views
         private ITransition targetLabelDisappearAnimation;
         private ITransition solveAppearAnimation;
         private ITransition solveDisappearAnimation;
-
-        private ITransition toolbarButtonsAppearAnimation;
-        private ITransition toolbarButtonsDisappearAnimation;
-
-        private ToolbarButton newGameButton;
-        private ToolbarButton hintButton;
-        private ToolbarButton undoButton;
 
         private bool solved;
         private bool newGameRequested;
@@ -44,24 +38,17 @@ namespace Numbers.Web.Views
 
             targetBackground2.HtmlElement.AddEventListener("mousedown", e => NewGame(), false);
 
+            toolbarView = new ToolbarView(viewModel);
+            toolbarView.NewGameRequest += (sender, e) => NewGame();
+
             numbersCollectionView = new NumbersCollectionView(viewModel.Numbers);
             operatorsCollectionView = new OperatorsCollectionView(viewModel.Operators);
 
             Control targetLabel = new Label("target-label") { Text = viewModel.TargetValue.ToString() };
 
-            newGameButton = new ToolbarButton("new", "ic_action_new_dark.png", NewGame) { IsEnabled = false };
-            hintButton = new ToolbarButton("hint", "ic_action_help_dark.png", SelectHint, CalculateHint);
-            undoButton = new ToolbarButton("undo", "ic_action_undo_dark.png", viewModel.Undo);
-
             AppendChild(new Control("frame")
             {
-                new Control("toolbar")
-                {
-                    new Label("header") { Text = "Numbers" },
-                    newGameButton,
-                    hintButton,
-                    undoButton,
-                },
+                toolbarView,
                 targetBackground1,
                 targetBackground2,
                 numbersCollectionView,
@@ -84,14 +71,6 @@ namespace Numbers.Web.Views
                 new Transition(targetLabel.HtmlElement, "top", new PixelValueBounds(280, 340), new TransitionTiming(800)),
                 new Transition(targetLabel.HtmlElement, "opacity", new DoubleValueBounds(1, 0), new TransitionTiming(800)));
 
-            toolbarButtonsAppearAnimation = new ParallelTransition(
-                new Transition(hintButton.HtmlElement, "opacity", new DoubleValueBounds(0, 1), new TransitionTiming(800)),
-                new Transition(undoButton.HtmlElement, "opacity", new DoubleValueBounds(0, 1), new TransitionTiming(800)));
-
-            toolbarButtonsDisappearAnimation = new ParallelTransition(
-                new Transition(hintButton.HtmlElement, "opacity", new DoubleValueBounds(1, 0), new TransitionTiming(800)),
-                new Transition(undoButton.HtmlElement, "opacity", new DoubleValueBounds(1, 0), new TransitionTiming(800)));
-
             solveAppearAnimation = new ParallelTransition(
                 new Keyframe(targetBackground1.HtmlElement, "visibility", "visible", 300),
                 new MultiplePropertyTransition(targetBackground1.HtmlElement, new[] { "transform", "-webkit-transform" }, new ScaleValueBounds(1, 10), new TransitionTiming(2000), 200),
@@ -111,9 +90,7 @@ namespace Numbers.Web.Views
                 new Transition(operatorsCollectionView.HtmlElement, "top", new PixelValueBounds(176, 236), new TransitionTiming(800)),
                 new Transition(operatorsCollectionView.HtmlElement, "opacity", new DoubleValueBounds(1, 0), new TransitionTiming(800)),
                 new Transition(targetLabel.HtmlElement, "top", new PixelValueBounds(280, 340), new TransitionTiming(800)),
-                new Transition(targetLabel.HtmlElement, "opacity", new DoubleValueBounds(1, 0), new TransitionTiming(800)),
-
-                toolbarButtonsDisappearAnimation);
+                new Transition(targetLabel.HtmlElement, "opacity", new DoubleValueBounds(1, 0), new TransitionTiming(800)));
 
 
             solveDisappearAnimation = new ParallelTransition(
@@ -128,7 +105,7 @@ namespace Numbers.Web.Views
 
         private void OnSelectionChanged(object sender, EventArgs e)
         {
-            if (!hintButton.IsPressed)
+            if (!toolbarView.IsHintPressed)
             {
                 viewModel.TryCalculate();
             }
@@ -139,9 +116,7 @@ namespace Numbers.Web.Views
             numbersCollectionView.StartAppearAnimation(600);
             operatorsCollectionView.StartAppearAnimation(600);
             targetLabelAppearAnimation.Start();
-            toolbarButtonsAppearAnimation.Start();
-
-            Window.SetTimeout(() => newGameButton.IsEnabled = true, 1000);
+            toolbarView.StartAppearAnimation();
         }
 
         private void NewGame()
@@ -161,39 +136,16 @@ namespace Numbers.Web.Views
             else
             {
                 targetLabelDisappearAnimation.Start();
-                toolbarButtonsDisappearAnimation.Start();
+                toolbarView.StartDisappearAnimation();
                 numbersCollectionView.StartDisappearAnimation(600);
                 operatorsCollectionView.StartDisappearAnimation(600);
                 Window.SetTimeout(viewModel.NewGame, 1000);
             }
         }
 
-        private void SelectHint()
-        {
-            Number number = viewModel.Hint();
-
-            if (number != null)
-            {
-                viewModel.SetSelection(number);
-            }
-            else
-            {
-                viewModel.Undo();
-            }
-        }
-
-        private void CalculateHint()
-        {
-            Window.SetTimeout(viewModel.TryCalculate, 100);
-        }
-
         private void OnSolved(object sender, EventArgs e)
         {
             solved = true;
-
-            hintButton.IsEnabled = false;
-            undoButton.IsEnabled = false;
-
             solveAppearAnimation.Start();
         }
     }
