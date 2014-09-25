@@ -33,4 +33,25 @@ namespace Numbers.Web.Transitions
             return new ReversedValueBounds(valueBounds);
         }
     }
+
+    public class ValueBounds : IValueBounds
+    {
+        public string FormattedStartValue { get; private set; }
+        public string FormattedEndValue { get; private set; }
+
+        private Func<ValueBounds, string, double> getProgress;
+
+        public ValueBounds(string startValue, string endValue, Func<ValueBounds, string, double> getProgress = null)
+        {
+            this.FormattedStartValue = startValue;
+            this.FormattedEndValue = endValue;
+
+            this.getProgress = getProgress;
+        }
+
+        public double GetProgress(string formattedValue)
+        {
+            return getProgress == null ? 0 : getProgress(this, formattedValue);
+        }
+    }
 }
