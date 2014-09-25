@@ -28,6 +28,12 @@ namespace Numbers.Web
         {
             return 0;
         }
+
+        [InlineCode("'requestAnimationFrame' in window")]
+        public static bool IsRequestAnimationFrameSupported()
+        {
+            return false;
+        }
     }
 
     public static class StyleExtensions

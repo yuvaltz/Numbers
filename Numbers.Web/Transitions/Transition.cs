@@ -75,16 +75,13 @@ namespace Numbers.Web.Transitions
                 targetElement.Style.GetTransitionDictionary().Clear(targetProperty);
                 targetElement.Style[targetProperty] = currentValue;
 
-                WindowExtensions.RequestAnimationFrame(() =>
+                RunAsync(() =>
                 {
-                    WindowExtensions.RequestAnimationFrame(() =>
+                    if (state == State.Running)
                     {
-                        if (state == State.Running)
-                        {
-                            targetElement.Style.GetTransitionDictionary().Set(targetProperty, currentTiming.ToString());
-                            targetElement.Style[targetProperty] = valueBounds.FormattedEndValue;
-                        }
-                    });
+                        targetElement.Style.GetTransitionDictionary().Set(targetProperty, currentTiming.ToString());
+                        targetElement.Style[targetProperty] = valueBounds.FormattedEndValue;
+                    }
                 });
 
                 Window.SetTimeout(() =>
@@ -127,6 +124,18 @@ namespace Numbers.Web.Transitions
             if (Completed != null)
             {
                 Completed(this, EventArgs.Empty);
+            }
+        }
+
+        private static void RunAsync(Action action)
+        {
+            if (WindowExtensions.IsRequestAnimationFrameSupported())
+            {
+                WindowExtensions.RequestAnimationFrame(() => WindowExtensions.RequestAnimationFrame(action));
+            }
+            else
+            {
+                Window.SetTimeout(() => Window.SetTimeout(action));
             }
         }
     }
