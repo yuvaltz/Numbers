@@ -40,7 +40,8 @@ namespace Numbers.Web
 
         private static IDictionary<string, string> CreateDictionary(string rawList)
         {
-            return rawList.Split(TokenSeparator).Where(token => !String.IsNullOrEmpty(token)).ToDictionary(GetTokenKey, GetTokenValue);
+            return String.IsNullOrEmpty(rawList) ? new Dictionary<string, string>() :
+                rawList.Split(TokenSeparator).Where(token => !String.IsNullOrEmpty(token)).ToDictionary(GetTokenKey, GetTokenValue);
         }
 
         private static string CreateRawList(IDictionary<string, string> dictionary)
