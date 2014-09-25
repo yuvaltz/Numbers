@@ -49,4 +49,13 @@ namespace Numbers.Web
             return new TokenDictionary(() => GetTransition(style), value => SetTransition(style, value));
         }
     }
+
+    public static class ElementExtensions
+    {
+        [InlineCode("'ontouchstart' in {element}")]
+        public static bool IsTouchAvailable(this Element element)
+        {
+            return false;
+        }
+    }
 }
