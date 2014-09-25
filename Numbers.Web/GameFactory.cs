@@ -21,22 +21,29 @@ namespace Numbers.Web
 
         public static Game CreateFromSolutionRange(int minimumSolutions, int maximumSolutions)
         {
-            Console.WriteLine(String.Format("Creating a game with {0}-{1} solutions", minimumSolutions, maximumSolutions));
+            Console.WriteLine(String.Format("Looking for a problem with {0}-{1} solutions", minimumSolutions, maximumSolutions));
 
             while (true)
             {
                 IEnumerable<int> values = GenerateRandomValues();
-                int target = GetRandomTarget(values, minimumSolutions, maximumSolutions);
+                int target;
+                int solutionsCount;
 
-                if (target != -1)
+                if (SelectRandomTarget(values, minimumSolutions, maximumSolutions, out target, out solutionsCount))
                 {
+                    Console.WriteLine(String.Format("Found {0}-{1} with {2} solutions",
+                        values.Select(value => value.ToString()).Aggregate((s1, s2) => String.Format("{0}-{1}", s1, s2)), target, solutionsCount));
+
                     return new Game(values, target);
                 }
             }
         }
 
-        private static int GetRandomTarget(IEnumerable<int> values, int minimumSolutions, int maximumSolutions)
+        private static bool SelectRandomTarget(IEnumerable<int> values, int minimumSolutions, int maximumSolutions, out int selectedTarget, out int selectedTargetSolutions)
         {
+            selectedTarget = 0;
+            selectedTargetSolutions = 0;
+
             int[] solutionsCount = Solver.GetSolutionsCount(values, MaximumTarget);
 
             int[] targets = solutionsCount.
@@ -46,12 +53,14 @@ namespace Numbers.Web
 
             if (targets.Length == 0)
             {
-                return -1;
+                return false;
             }
 
-            int randomTarget = (int)GetNormalDistributedRandom(TargetMean, TargetMeanSd);
+            int preferredTarget = (int)GetNormalDistributedRandom(TargetMean, TargetMeanSd);
 
-            return targets.OrderBy(target => Math.Abs(target - randomTarget)).First();
+            selectedTarget = targets.OrderBy(target => Math.Abs(target - preferredTarget)).First();
+            selectedTargetSolutions = solutionsCount[selectedTarget];
+            return true;
         }
 
         private static double GetNormalDistributedRandom(double mean, double sd)
