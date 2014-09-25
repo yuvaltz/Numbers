@@ -52,18 +52,22 @@ div.frame
 
 div.label.target-label
 {
-    position: absolute;
     font-size: 48px;
     color: rgba(66, 66, 66, 0.87);
     text-align: center;
     line-height: 58px;
-    border-top: 2px solid #bdbdbd;
-    -webkit-border-top: 2px solid #bdbdbd;
+    cursor: default;
+}
+
+div.target-panel
+{
+    position: absolute;
     top: 280px;
     height: 64px;
     width: 600px;
+    border-top: 2px solid #bdbdbd;
+    -webkit-border-top: 2px solid #bdbdbd;
     background: #f5f5f5;
-    cursor: default;
     opacity: 0;
 }
 

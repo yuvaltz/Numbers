@@ -75,6 +75,7 @@
     <Compile Include="Views\GameView.cs" />
     <Compile Include="Views\NumbersCollectionView.cs" />
     <Compile Include="Views\OperatorsCollectionView.cs" />
+    <Compile Include="Views\TargetView.cs" />
     <Compile Include="Views\ToolbarView.cs" />
   </ItemGroup>
   <ItemGroup>

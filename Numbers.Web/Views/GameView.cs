@@ -16,9 +16,8 @@ namespace Numbers.Web.Views
         private ToolbarView toolbarView;
         private NumbersCollectionView numbersCollectionView;
         private OperatorsCollectionView operatorsCollectionView;
+        private TargetView targetView;
 
-        private ITransition targetLabelAppearAnimation;
-        private ITransition targetLabelDisappearAnimation;
         private ITransition solveAppearAnimation;
         private ITransition solveDisappearAnimation;
 
@@ -44,7 +43,7 @@ namespace Numbers.Web.Views
             numbersCollectionView = new NumbersCollectionView(viewModel.Numbers);
             operatorsCollectionView = new OperatorsCollectionView(viewModel.Operators);
 
-            Control targetLabel = new Label("target-label") { Text = viewModel.TargetValue.ToString() };
+            targetView = new TargetView(viewModel.TargetValue);
 
             AppendChild(new Control("frame")
             {
@@ -53,7 +52,7 @@ namespace Numbers.Web.Views
                 targetBackground2,
                 numbersCollectionView,
                 operatorsCollectionView,
-                targetLabel,
+                targetView,
                 targetBackgroundOverlay1,
                 targetBackgroundOverlay2,
             });
@@ -62,14 +61,6 @@ namespace Numbers.Web.Views
 
             viewModel.SelectionChanged += OnSelectionChanged;
             viewModel.Solved += OnSolved;
-
-            targetLabelAppearAnimation = new ParallelTransition(
-                new Transition(targetLabel.HtmlElement, "top", new PixelValueBounds(340, 280), new TransitionTiming(800)),
-                new Transition(targetLabel.HtmlElement, "opacity", new DoubleValueBounds(0, 1), new TransitionTiming(800)));
-
-            targetLabelDisappearAnimation = new ParallelTransition(
-                new Transition(targetLabel.HtmlElement, "top", new PixelValueBounds(280, 340), new TransitionTiming(800)),
-                new Transition(targetLabel.HtmlElement, "opacity", new DoubleValueBounds(1, 0), new TransitionTiming(800)));
 
             solveAppearAnimation = new ParallelTransition(
                 new Keyframe(targetBackground1.HtmlElement, "visibility", "visible", 300),
@@ -88,9 +79,7 @@ namespace Numbers.Web.Views
                 new Transition(numbersCollectionView.HtmlElement, "top", new PixelValueBounds(80, 164), new TransitionTiming(800, TimingCurve.EaseOut), 200),
 
                 new Transition(operatorsCollectionView.HtmlElement, "top", new PixelValueBounds(176, 236), new TransitionTiming(800)),
-                new Transition(operatorsCollectionView.HtmlElement, "opacity", new DoubleValueBounds(1, 0), new TransitionTiming(800)),
-                new Transition(targetLabel.HtmlElement, "top", new PixelValueBounds(280, 340), new TransitionTiming(800)),
-                new Transition(targetLabel.HtmlElement, "opacity", new DoubleValueBounds(1, 0), new TransitionTiming(800)));
+                new Transition(operatorsCollectionView.HtmlElement, "opacity", new DoubleValueBounds(1, 0), new TransitionTiming(800)));
 
 
             solveDisappearAnimation = new ParallelTransition(
@@ -115,7 +104,7 @@ namespace Numbers.Web.Views
         {
             numbersCollectionView.StartAppearAnimation(600);
             operatorsCollectionView.StartAppearAnimation(600);
-            targetLabelAppearAnimation.Start();
+            targetView.StartAppearAnimation();
             toolbarView.StartAppearAnimation();
         }
 
@@ -135,7 +124,7 @@ namespace Numbers.Web.Views
             }
             else
             {
-                targetLabelDisappearAnimation.Start();
+                targetView.StartDisappearAnimation();
                 toolbarView.StartDisappearAnimation();
                 numbersCollectionView.StartDisappearAnimation(600);
                 operatorsCollectionView.StartDisappearAnimation(600);
@@ -147,6 +136,7 @@ namespace Numbers.Web.Views
         {
             solved = true;
             solveAppearAnimation.Start();
+            targetView.StartDisappearAnimation();
         }
     }
 }
