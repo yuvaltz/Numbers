@@ -129,11 +129,40 @@ namespace Numbers.Web
                 return;
             }
 
-            gameView.Left = Math.Max(0, (Window.InnerWidth - GameView.Width) / 2);
-            gameView.Top = Math.Max(0, (Window.InnerHeight - GameView.Height) / 2);
+            int viewContainerWidth = 0;
+            int viewContainerHeight = 0;
 
-            Document.Body.Style.Width = String.Format("{0}px", Window.InnerWidth);
-            Document.Body.Style.Height = String.Format("{0}px", Window.InnerHeight);
+            GetContianerDimension(Window.InnerWidth, Window.InnerHeight, GameView.Width, GameView.Height, ref viewContainerWidth, ref viewContainerHeight);
+
+            gameView.Left = (viewContainerWidth - GameView.Width) / 2;
+            gameView.Top = (viewContainerHeight - GameView.Height) / 2;
+
+            Document.Body.Style.Width = String.Format("{0}px", viewContainerWidth);
+            Document.Body.Style.Height = String.Format("{0}px", viewContainerHeight);
+        }
+
+        private static void GetContianerDimension(int windowWidth, int windowHeight, int viewWidth, int viewHeight, ref int viewContainerWidth, ref int viewContainerHeight)
+        {
+            if (windowWidth >= viewWidth && windowHeight >= viewHeight)
+            {
+                viewContainerWidth = windowWidth;
+                viewContainerHeight = windowHeight;
+                return;
+            }
+
+            double windowSizeRatio = (double)windowWidth / windowHeight;
+            double viewSizeRatio = (double)viewWidth / viewHeight;
+
+            if (windowSizeRatio > viewSizeRatio)
+            {
+                viewContainerWidth = (int)(viewHeight * windowSizeRatio);
+                viewContainerHeight = viewHeight;
+            }
+            else
+            {
+                viewContainerWidth = viewWidth;
+                viewContainerHeight = (int)(viewWidth / windowSizeRatio);
+            }
         }
 
         public static void Main()

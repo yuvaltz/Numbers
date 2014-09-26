@@ -19,9 +19,9 @@ body
 
 div.root
 {
-    position: fixed;
+    position: absolute;
     width: 600px;
-    height: 400px;
+    height: 340px;
 }
 
 div.frame
