@@ -73,13 +73,14 @@ div.toolbar-button
     overflow: hidden;
 }
 
-div.toolbar-button img
-{
+div.toolbar-button-image {
     position: absolute;
     top: 8px;
     left: 8px;
     width: 32px;
     height: 32px;
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
 }
 
 div.toolbar-button:hover
@@ -95,6 +96,7 @@ div.toolbar-button-overlay
     top: -2px;
     width: 52px;
     height: 52px;
+    z-index: 1;
     border-radius: 26px;
     -webkit-border-radius: 26px;
 }
@@ -102,4 +104,19 @@ div.toolbar-button-overlay
 div.toolbar-button:hover div.toolbar-button-overlay
 {
     background: rgba(0, 0, 0, 0.05);
+}
+
+div.image-new
+{
+    background-image: url('ic_action_new_dark.png');
+}
+
+div.image-help
+{
+    background-image: url('ic_action_help_dark.png');
+}
+
+div.image-undo
+{
+    background-image: url('ic_action_undo_dark.png');
 }

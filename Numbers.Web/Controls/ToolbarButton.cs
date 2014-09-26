@@ -12,16 +12,12 @@ namespace Numbers.Web.Controls
         private Action mouseDown;
         private Action mouseUp;
 
-        public ToolbarButton(string className, string imageSource, Action mouseDown, Action mouseUp = null) :
+        public ToolbarButton(string className, Action mouseDown = null, Action mouseUp = null) :
             base("toolbar-button", className)
         {
             this.mouseDown = mouseDown;
             this.mouseUp = mouseUp;
 
-            Element imageElement = Document.CreateElement("img");
-            imageElement.SetAttribute("src", imageSource);
-
-            HtmlElement.AppendChild(imageElement);
             AppendChild(new Control("toolbar-button-overlay"));
 
             IsEnabled = true;

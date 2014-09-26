@@ -29,9 +29,11 @@ namespace Numbers.Web.Views
             this.viewModel = viewModel;
             viewModel.Solved += OnSolved;
 
-            newGameButton = new ToolbarButton("new", "ic_action_new_dark.png", RaiseNewGameRequest) { IsEnabled = false };
-            hintButton = new ToolbarButton("hint", "ic_action_help_dark.png", SelectHint, CalculateHint);
-            undoButton = new ToolbarButton("undo", "ic_action_undo_dark.png", viewModel.Undo);
+            newGameButton = new ToolbarButton("new", RaiseNewGameRequest) { new Control("toolbar-button-image", "image-new") };
+            hintButton = new ToolbarButton("hint", SelectHint, CalculateHint) { new Control("toolbar-button-image", "image-help") };
+            undoButton = new ToolbarButton("undo", viewModel.Undo) { new Control("toolbar-button-image", "image-undo") };
+
+            newGameButton.IsEnabled = false;
 
             this.AppendChild(new Label("header") { Text = "Numbers" });
             this.AppendChild(newGameButton);
