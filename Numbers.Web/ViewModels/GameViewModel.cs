@@ -15,6 +15,7 @@ namespace Numbers.Web.ViewModels
         public ObservableCollection<NumberViewModel> Numbers { get; private set; }
         public IEnumerable<OperatorViewModel> Operators { get; private set; }
         public int TargetValue { get { return model.TargetValue; } }
+        public int SolutionsCount { get { return model.SolutionsCount; } }
 
         private int stepsCount;
         private int hintCount;

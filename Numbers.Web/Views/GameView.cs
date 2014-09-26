@@ -43,7 +43,7 @@ namespace Numbers.Web.Views
             numbersCollectionView = new NumbersCollectionView(viewModel.Numbers);
             operatorsCollectionView = new OperatorsCollectionView(viewModel.Operators);
 
-            targetView = new TargetView(viewModel.TargetValue);
+            targetView = new TargetView(viewModel.TargetValue, viewModel.SolutionsCount);
 
             AppendChild(new Control("frame")
             {

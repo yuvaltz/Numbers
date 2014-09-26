@@ -52,6 +52,8 @@ div.frame
 
 div.label.target-label
 {
+    position: absolute;
+    width: 600px;
     font-size: 48px;
     color: rgba(66, 66, 66, 0.87);
     text-align: center;
@@ -59,9 +61,21 @@ div.label.target-label
     cursor: default;
 }
 
+div.label.target-solutions-label
+{
+    position: absolute;
+    width: 600px;
+    opacity: 0;
+    font-size: 24px;
+    color: rgba(66, 66, 66, 0.87);
+    text-align: center;
+    cursor: default;
+}
+
 div.target-panel
 {
     position: absolute;
+    overflow: hidden;
     top: 280px;
     height: 64px;
     width: 600px;

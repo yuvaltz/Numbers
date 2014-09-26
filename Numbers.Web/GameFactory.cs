@@ -15,8 +15,14 @@ namespace Numbers.Web
 
         public static Game CreateFromHash(string value)
         {
-            IEnumerable<int> values = value.Split("-").Select(valueString => Int32.Parse(valueString)).Take(7).ToArray();
-            return new Game(values.Take(values.Count() - 1), values.Last());
+            IEnumerable<int> hashValues = value.Split("-").Select(valueString => Int32.Parse(valueString)).Take(7).ToArray();
+
+            IEnumerable<int> values = hashValues.Take(hashValues.Count() - 1);
+            int targetValue = hashValues.Last();
+
+            int[] solutionsCount = Solver.CountSolutions(values, MaximumTarget);
+
+            return new Game(values, targetValue, solutionsCount[targetValue]);
         }
 
         public static Game CreateFromSolutionRange(int minimumSolutions, int maximumSolutions)
@@ -34,7 +40,7 @@ namespace Numbers.Web
                     Console.WriteLine(String.Format("Found {0}-{1} with {2} solutions",
                         values.Select(value => value.ToString()).Aggregate((s1, s2) => String.Format("{0}-{1}", s1, s2)), target, solutionsCount));
 
-                    return new Game(values, target);
+                    return new Game(values, target, solutionsCount);
                 }
             }
         }
@@ -44,7 +50,7 @@ namespace Numbers.Web
             selectedTarget = 0;
             selectedTargetSolutions = 0;
 
-            int[] solutionsCount = Solver.GetSolutionsCount(values, MaximumTarget);
+            int[] solutionsCount = Solver.CountSolutions(values, MaximumTarget);
 
             int[] targets = solutionsCount.
                     Select((count, target) => Tuple.Create(count, target)).

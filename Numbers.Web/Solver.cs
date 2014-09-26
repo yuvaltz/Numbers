@@ -6,7 +6,7 @@ namespace Numbers.Web
 {
     public static class Solver
     {
-        public static int[] GetSolutionsCount(IEnumerable<int> values, int maximumTarget)
+        public static int[] CountSolutions(IEnumerable<int> values, int maximumTarget)
         {
             if (values.Distinct().Count() != values.Count())
             {

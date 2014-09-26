@@ -9,15 +9,17 @@ namespace Numbers.Web
         public IEnumerable<int> InitialValues { get; private set; }
         public IEnumerable<Number> CurrentNumbers { get; private set; }
         public int TargetValue { get; private set; }
+        public int SolutionsCount { get; private set; }
         public bool IsSolved { get { return CurrentNumbers.Count() == 1 && CurrentNumbers.First().Value == TargetValue; } }
 
         private Stack<Number> stack;
 
-        public Game(IEnumerable<int> values, int targetValue)
+        public Game(IEnumerable<int> values, int targetValue, int solutionsCount)
         {
             this.InitialValues = values.ToArray();
             this.CurrentNumbers = values.Select(Number.Create).ToArray();
             this.TargetValue = targetValue;
+            this.SolutionsCount = solutionsCount;
             this.stack = new Stack<Number>();
         }
 
