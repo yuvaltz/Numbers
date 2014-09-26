@@ -7,7 +7,6 @@ namespace Numbers.Web
 {
     public class Application : IGameHost
     {
-        private const int LevelMargins = 5;
         private const int DefaultLevel = 50;
 
         private const string LevelConfigurationKey = "Level";
@@ -64,7 +63,7 @@ namespace Numbers.Web
             }
             else
             {
-                Game = GameFactory.CreateFromSolutionRange(Level - LevelMargins, Level + LevelMargins);
+                Game = GameFactory.CreateFromSolutionRange(Level, (int)((Level + 3) * 1.1));
                 customGame = false;
             }
 
@@ -77,16 +76,16 @@ namespace Numbers.Web
             {
                 if (levelChange == LevelChange.Easier)
                 {
-                    Level = (int)Math.Min((double)Level * 1.2, 100);
+                    Level = (int)Math.Min((double)Level * 1.1, 100);
                 }
 
                 if (levelChange == LevelChange.Harder)
                 {
-                    Level = (int)Math.Max((double)Level * 0.8, LevelMargins);
+                    Level = (int)Math.Max((double)Level * 0.9, 1);
                 }
             }
 
-            Game = GameFactory.CreateFromSolutionRange(Level - LevelMargins, Level + LevelMargins);
+            Game = GameFactory.CreateFromSolutionRange(Level, (int)((Level + 3) * 1.1));
             customGame = false;
         }
 
