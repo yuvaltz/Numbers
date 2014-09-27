@@ -59,21 +59,16 @@ div.toolbar-button
 {
     position: absolute;
     cursor: pointer;
-    top: 6px;
+    top: 8px;
     width: 48px;
     height: 48px;
     border-radius: 24px;
-    border-style: solid;
-    border-width: 2px;
-    border-color: transparent;
     -webkit-border-radius: 24px;
-    -webkit-border-style: solid;
-    -webkit-border-width: 2px;
-    -webkit-border-color: transparent;
     overflow: hidden;
 }
 
-div.toolbar-button-image {
+div.toolbar-button-image
+{
     position: absolute;
     top: 8px;
     left: 8px;
@@ -81,27 +76,11 @@ div.toolbar-button-image {
     height: 32px;
     background-size: 32px 32px;
     background-repeat: no-repeat;
+    pointer-events: none;
+    -ms-pointer-events: none;
 }
 
 div.toolbar-button:hover
-{
-    border-color: rgba(0, 0, 0, 0.05);
-    -webkit-border-color: rgba(0, 0, 0, 0.05);
-}
-
-div.toolbar-button-overlay
-{
-    position: absolute;
-    left: -2px;
-    top: -2px;
-    width: 52px;
-    height: 52px;
-    z-index: 1;
-    border-radius: 26px;
-    -webkit-border-radius: 26px;
-}
-
-div.toolbar-button:hover div.toolbar-button-overlay
 {
     background: rgba(0, 0, 0, 0.05);
 }

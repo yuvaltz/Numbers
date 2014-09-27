@@ -18,8 +18,6 @@ namespace Numbers.Web.Controls
             this.mouseDown = mouseDown;
             this.mouseUp = mouseUp;
 
-            AppendChild(new Control("toolbar-button-overlay"));
-
             IsEnabled = true;
 
             if (HtmlElement.IsTouchAvailable())
