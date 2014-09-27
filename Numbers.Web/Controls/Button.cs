@@ -72,10 +72,8 @@ namespace Numbers.Web.Controls
 
             overlayAnimation = new ParallelTransition(
                 new MultiplePropertyTransition(overlay.HtmlElement, new[] { "transform", "-webkit-transform" }, new ScaleValueBounds(0, 1.5), new TransitionTiming(400, TimingCurve.EaseOut)),
-                new SequentialTransition(
-                    new Transition(overlay.HtmlElement, "opacity", new DoubleValueBounds(0, 1), new TransitionTiming(100, TimingCurve.EaseIn), 0, Transition.ContinuationMode.ContinueValueAndTime),
-                    new Transition(overlay.HtmlElement, "opacity", new DoubleValueBounds(1, 0), new TransitionTiming(300, TimingCurve.EaseOut), 0, Transition.ContinuationMode.ContinueValueAndTime))
-                );
+                new Transition(overlay.HtmlElement, "opacity", new DoubleValueBounds(0, 1), new TransitionTiming(100, TimingCurve.EaseIn), 0, Transition.ContinuationMode.ContinueValueAndTime),
+                new Transition(overlay.HtmlElement, "opacity", new DoubleValueBounds(1, 0), new TransitionTiming(200, TimingCurve.EaseOut), 100, Transition.ContinuationMode.ContinueValueAndTime));
 
             if (IsChecked)
             {
@@ -139,7 +137,9 @@ namespace Numbers.Web.Controls
             if (IsEnabled)
             {
                 IsChecked = !IsChecked;
-                overlay.HtmlElement.Style["transformOrigin"] = String.Format("{0}px {1}px", (e as UIEvent).LayerX, (e as UIEvent).LayerY);
+
+                UIEvent uiEvent = e as UIEvent;
+                overlay.HtmlElement.Style["transformOrigin"] = uiEvent.LayerY == 0 && uiEvent.LayerY == 0 ? "50% 50%" : String.Format("{0}px {1}px", uiEvent.LayerX, uiEvent.LayerY);
                 overlayAnimation.Start();
             }
 
