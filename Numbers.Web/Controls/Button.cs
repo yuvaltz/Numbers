@@ -52,7 +52,8 @@ namespace Numbers.Web.Controls
 
             AppendChild(overlay);
 
-            HtmlElement.AddEventListener("mousedown", OnMouseDown, false);
+            Window.AddEventListener("touchstart", OnPointerDown, false);
+            Window.AddEventListener("mousedown", OnPointerDown, false);
 
             IValueBounds transformValueBounds = new ScaleValueBounds(1, 1.08);
             IValueBounds opacityValueBounds = new DoubleValueBounds(0, 1);
@@ -127,26 +128,34 @@ namespace Numbers.Web.Controls
             animation.Start();
         }
 
-        private void OnMouseDown(Event e)
+        private void OnPointerDown(Event e)
         {
-            if (!IsEnabled)
+            if (e.Target != this.HtmlElement)
             {
                 return;
             }
 
-            IsChecked = !IsChecked;
-            overlayAnimation.Start();
-            overlay.HtmlElement.Style["transformOrigin"] = String.Format("{0}px {1}px", (e as MouseEvent).LayerX, (e as MouseEvent).LayerY);
+
+            if (IsEnabled)
+            {
+                IsChecked = !IsChecked;
+                overlay.HtmlElement.Style["transformOrigin"] = String.Format("{0}px {1}px", (e as UIEvent).LayerX, (e as UIEvent).LayerY);
+                overlayAnimation.Start();
+            }
+
+            e.PreventDefault();
         }
 
         private void OnIsCheckChanged()
         {
             if (IsChecked)
             {
+                uncheckedAnimation.Stop();
                 checkedAnimation.Start();
             }
             else
             {
+                checkedAnimation.Stop();
                 uncheckedAnimation.Start();
             }
 

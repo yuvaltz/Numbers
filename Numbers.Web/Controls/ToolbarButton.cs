@@ -20,49 +20,46 @@ namespace Numbers.Web.Controls
 
             IsEnabled = true;
 
-            if (HtmlElement.IsTouchAvailable())
-            {
-                HtmlElement.AddEventListener("touchstart", OnMouseDown, false);
-                HtmlElement.AddEventListener("touchend", OnMouseUp, false);
-                HtmlElement.AddEventListener("touchmove", OnMouseLeave, false);
-            }
-            else
-            {
-                HtmlElement.AddEventListener("mousedown", OnMouseDown, false);
-                HtmlElement.AddEventListener("mouseup", OnMouseUp, false);
-                HtmlElement.AddEventListener("mouseleave", OnMouseLeave, false);
-            }
+            Window.AddEventListener("mousedown", OnPointerDown, false);
+            Window.AddEventListener("mouseup", OnPointerUp, false);
+            Window.AddEventListener("mouseleave", OnPointerUp, false);
+
+            Window.AddEventListener("touchstart", OnPointerDown, false);
+            Window.AddEventListener("touchend", OnPointerUp, false);
         }
 
-        private void OnMouseDown()
+        private void OnPointerDown(Event e)
         {
-            if (!IsPressed)
+            if (e.Target != this.HtmlElement)
             {
-                IsPressed = true;
-
-                if (IsEnabled && mouseDown != null)
-                {
-                    mouseDown();
-                }
+                return;
             }
+
+            IsPressed = true;
+
+            if (IsEnabled && mouseDown != null)
+            {
+                mouseDown();
+            }
+
+            e.PreventDefault();
         }
 
-        private void OnMouseUp()
+        private void OnPointerUp(Event e)
         {
-            if (IsPressed)
+            if (e.Target != this.HtmlElement)
             {
-                IsPressed = false;
-
-                if (IsEnabled && mouseUp != null)
-                {
-                    mouseUp();
-                }
+                return;
             }
-        }
 
-        private void OnMouseLeave()
-        {
-            OnMouseUp();
+            IsPressed = false;
+
+            if (IsEnabled && mouseUp != null)
+            {
+                mouseUp();
+            }
+
+            e.PreventDefault();
         }
     }
 }

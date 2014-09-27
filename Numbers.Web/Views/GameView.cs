@@ -35,7 +35,8 @@ namespace Numbers.Web.Views
             Control targetBackgroundOverlay1 = new Control("target-background-overlay1");
             Control targetBackgroundOverlay2 = new Control("target-background-overlay2");
 
-            targetBackground2.HtmlElement.AddEventListener("mousedown", e => NewGame(), false);
+            targetBackground2.HtmlElement.AddEventListener("mousedown", OnPointerDown, false);
+            targetBackground2.HtmlElement.AddEventListener("touchstart", OnPointerDown, false);
 
             toolbarView = new ToolbarView(viewModel);
             toolbarView.NewGameRequest += (sender, e) => NewGame();
@@ -137,6 +138,12 @@ namespace Numbers.Web.Views
             solved = true;
             solveAppearAnimation.Start();
             targetView.StartDisappearAnimation();
+        }
+
+        private void OnPointerDown(Event e)
+        {
+            NewGame();
+            e.PreventDefault();
         }
     }
 }
