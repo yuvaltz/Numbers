@@ -7,7 +7,9 @@ namespace Numbers.Web
 {
     public class Application : IGameHost
     {
-        private const int DefaultLevel = 50;
+        private const int EasiestLevel = 120;
+        private const int DefaultLevel = 80;
+        private const int HardestLevel = 1;
 
         private const string LevelConfigurationKey = "Level";
 
@@ -76,12 +78,12 @@ namespace Numbers.Web
             {
                 if (levelChange == LevelChange.Easier)
                 {
-                    Level = (int)Math.Min((double)Level * 1.1, 100);
+                    Level = (int)Math.Min((double)Level * 1.1, EasiestLevel);
                 }
 
                 if (levelChange == LevelChange.Harder)
                 {
-                    Level = (int)Math.Max((double)Level * 0.9, 1);
+                    Level = (int)Math.Max((double)Level * 0.9, HardestLevel);
                 }
             }
 
