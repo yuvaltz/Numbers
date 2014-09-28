@@ -35,7 +35,9 @@ namespace Numbers.Web.Controls
 
         private void OnPointerDown(Event e)
         {
-            if (e.Target != this.HtmlElement)
+            EventTarget target = e.Target ?? e.GetSrcElement();
+
+            if (target != this.HtmlElement)
             {
                 return;
             }
@@ -52,7 +54,9 @@ namespace Numbers.Web.Controls
 
         private void OnPointerUp(Event e)
         {
-            if (e.Target != this.HtmlElement)
+            EventTarget target = e.Target ?? e.GetSrcElement();
+
+            if (target != this.HtmlElement)
             {
                 return;
             }

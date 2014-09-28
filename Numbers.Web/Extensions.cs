@@ -70,4 +70,13 @@ namespace Numbers.Web
             return false;
         }
     }
+
+    public static class EventExtensions
+    {
+        [InlineCode("{e}.srcElement")]
+        public static EventTarget GetSrcElement(this Event e)
+        {
+            return null;
+        }
+    }
 }
