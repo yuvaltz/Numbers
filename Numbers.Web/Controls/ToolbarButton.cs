@@ -29,7 +29,7 @@ namespace Numbers.Web.Controls
             {
                 Window.AddEventListener("mousedown", OnPointerDown, false);
                 Window.AddEventListener("mouseup", OnPointerUp, false);
-                Window.AddEventListener("mouseleave", OnPointerUp, false);
+                HtmlElement.AddEventListener("mouseleave", e => { if (IsPressed) { OnPointerUp(e); } }, false);
             }
         }
 
