@@ -136,63 +136,6 @@ namespace Numbers.Web
             return FindInitialOperation(target.Operand1, initialNumbers) ?? FindInitialOperation(target.Operand2, initialNumbers);
         }
 
-        public static Number FindSolution(IEnumerable<Number> numbers, int target)
-        {
-            return FindSolution(numbers.ToArray(), target);
-        }
-
-        private static Number FindSolution(Number[] numbers, int target)
-        {
-            if (numbers.Length == 1)
-            {
-                return numbers[0].Value == target ? numbers[0] : null;
-            }
-
-            Number[] newNumbers = new Number[numbers.Length - 1];
-
-            for (int i = 0; i < numbers.Length; i++)
-            {
-                for (int j = 0; j < numbers.Length; j++)
-                {
-                    Number number1 = numbers[i];
-                    Number number2 = numbers[j];
-
-                    if (i == j || number1.Value < number2.Value)
-                    {
-                        continue;
-                    }
-
-                    CopyPartialArray(numbers, ref newNumbers, i, j);
-
-                    Number[] nextNumbers = new[]
-                    {
-                        Number.Add(number1, number2),
-                        Number.Subtract(number1, number2),
-                        Number.Multiply(number1, number2),
-                        Number.Divide(number1, number2),
-                    };
-                    
-                    foreach (Number nextNumber in nextNumbers)
-                    {
-                        if (nextNumber == null)
-                        {
-                            continue;
-                        }
-
-                        newNumbers[newNumbers.Length - 1] = nextNumber;
-
-                        Number result = FindSolution(newNumbers, target);
-                        if (result != null)
-                        {
-                            return result;
-                        }
-                    }
-                }
-            }
-
-            return null;
-        }
-
         private static void CopyPartialArray<T>(T[] source, ref T[] target, params int[] excludeIndexes)
         {
             int resultIndex = 0;
