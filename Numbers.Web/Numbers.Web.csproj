@@ -49,6 +49,7 @@
     <Compile Include="GameFactory.cs" />
     <Compile Include="GameHost.cs" />
     <Compile Include="Generic\ConvertedObservableCollection.cs" />
+    <Compile Include="Generic\ComparableEqualityComparer.cs" />
     <Compile Include="Generic\NotifyCollectionChanged.cs" />
     <Compile Include="Generic\NotifyPropertyChanged.cs" />
     <Compile Include="Generic\ObservableCollection.cs" />

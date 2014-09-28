@@ -1,36 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Numbers.Web.Generic;
 
 namespace Numbers.Web
 {
     public static class Solver
     {
-        public static int[] CountSolutions(IEnumerable<int> values, int maximumTarget)
+        public static IEnumerable<Number> GetSolutions(IEnumerable<Number> numbers, int targetValue)
+        {
+            if (numbers.Distinct(new ComparableEqualityComparer<Number>()).Count() != numbers.Count())
+            {
+                throw new Exception("Values are not distinct");
+            }
+
+            return GetTargets(numbers.ToArray()).Where(target => target.Value == targetValue);
+        }
+
+        public static int CountSolutions(IEnumerable<int> values, int targetValue)
+        {
+            return GetSolutions(values.Select(Number.Create).ToArray(), targetValue).Count();
+        }
+
+        public static int[] CountAllSolutions(IEnumerable<int> values, int maximumTargetValue)
         {
             if (values.Distinct().Count() != values.Count())
             {
                 throw new Exception("Values are not distinct");
             }
 
-            int[] solutionsCount = Array.Repeat<int>(0, maximumTarget);
-
-            CountSolutions(values.Select(Number.Create).ToArray(), 0, ref solutionsCount);
+            int[] solutionsCount = Array.Repeat<int>(0, maximumTargetValue);
+            foreach (Number target in GetTargets(values.Select(Number.Create).ToArray()))
+            {
+                if (target.Value < maximumTargetValue)
+                {
+                    solutionsCount[target.Value]++;
+                }
+            }
 
             return solutionsCount;
         }
 
-        private static void CountSolutions(Number[] numbers, int startIndex, ref int[] solutionsCount)
+        private static IEnumerable<Number> GetTargets(Number[] numbers, int startIndex = 0)
         {
             if (numbers.Length == 1)
             {
-                int target = numbers[0].Value;
-                if (target < solutionsCount.Length)
-                {
-                    solutionsCount[target]++;
-                }
-
-                return;
+                yield return numbers[0];
+                yield break;
             }
 
             Number[] newNumbers = new Number[numbers.Length - 1];
@@ -57,7 +73,10 @@ namespace Numbers.Web
 
                         newNumbers[newNumbers.Length - 1] = nextNumber;
 
-                        CountSolutions(newNumbers, Math.Max(startIndex, i), ref solutionsCount);
+                        foreach (Number target in GetTargets(newNumbers, Math.Max(startIndex, i)))
+                        {
+                            yield return target;
+                        }
                     }
                 }
             }

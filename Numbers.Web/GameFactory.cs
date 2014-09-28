@@ -19,10 +19,9 @@ namespace Numbers.Web
 
             IEnumerable<int> values = hashValues.Take(hashValues.Count() - 1);
             int targetValue = hashValues.Last();
+            int solutionsCount = Solver.CountSolutions(values, targetValue);
 
-            int[] solutionsCount = Solver.CountSolutions(values, MaximumTarget);
-
-            return new Game(values, targetValue, solutionsCount[targetValue]);
+            return new Game(values, targetValue, solutionsCount);
         }
 
         public static Game CreateFromSolutionRange(int minimumSolutions, int maximumSolutions)
@@ -50,7 +49,7 @@ namespace Numbers.Web
             selectedTarget = 0;
             selectedTargetSolutions = 0;
 
-            int[] solutionsCount = Solver.CountSolutions(values, MaximumTarget);
+            int[] solutionsCount = Solver.CountAllSolutions(values, MaximumTarget);
 
             int[] targets = solutionsCount.
                     Select((count, target) => Tuple.Create(count, target)).
