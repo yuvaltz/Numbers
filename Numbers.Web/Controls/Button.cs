@@ -52,8 +52,14 @@ namespace Numbers.Web.Controls
 
             AppendChild(overlay);
 
-            Window.AddEventListener("touchstart", OnPointerDown, false);
-            Window.AddEventListener("mousedown", OnPointerDown, false);
+            if (WindowExtensions.IsTouchAvailable())
+            {
+                Window.AddEventListener("touchstart", OnPointerDown, false);
+            }
+            else
+            {
+                Window.AddEventListener("mousedown", OnPointerDown, false);
+            }
 
             IValueBounds transformValueBounds = new ScaleValueBounds(1, 1.08);
             IValueBounds opacityValueBounds = new DoubleValueBounds(0, 1);

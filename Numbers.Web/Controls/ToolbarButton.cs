@@ -20,12 +20,17 @@ namespace Numbers.Web.Controls
 
             IsEnabled = true;
 
-            Window.AddEventListener("mousedown", OnPointerDown, false);
-            Window.AddEventListener("mouseup", OnPointerUp, false);
-            Window.AddEventListener("mouseleave", OnPointerUp, false);
-
-            Window.AddEventListener("touchstart", OnPointerDown, false);
-            Window.AddEventListener("touchend", OnPointerUp, false);
+            if (WindowExtensions.IsTouchAvailable())
+            {
+                Window.AddEventListener("touchstart", OnPointerDown, false);
+                Window.AddEventListener("touchend", OnPointerUp, false);
+            }
+            else
+            {
+                Window.AddEventListener("mousedown", OnPointerDown, false);
+                Window.AddEventListener("mouseup", OnPointerUp, false);
+                Window.AddEventListener("mouseleave", OnPointerUp, false);
+            }
         }
 
         private void OnPointerDown(Event e)

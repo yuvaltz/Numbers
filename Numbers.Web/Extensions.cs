@@ -34,6 +34,12 @@ namespace Numbers.Web
         {
             return false;
         }
+
+        [InlineCode("'ontouchstart' in window")]
+        public static bool IsTouchAvailable()
+        {
+            return false;
+        }
     }
 
     public static class StyleExtensions
