@@ -24,6 +24,8 @@ namespace Numbers.Web.Controls
             {
                 Window.AddEventListener("touchstart", OnPointerDown, false);
                 Window.AddEventListener("touchend", OnPointerUp, false);
+                Window.AddEventListener("touchmove", OnPointerMove, false);
+                Window.AddEventListener("touchcancel", e => { if (IsPressed) { OnPointerUp(e); } }, false);
             }
             else
             {
@@ -47,6 +49,18 @@ namespace Numbers.Web.Controls
             if (IsEnabled && mouseDown != null)
             {
                 mouseDown();
+            }
+
+            e.PreventDefault();
+        }
+
+        private void OnPointerMove(Event e)
+        {
+            EventTarget target = e.Target ?? e.GetSrcElement();
+
+            if (target != this.HtmlElement)
+            {
+                return;
             }
 
             e.PreventDefault();

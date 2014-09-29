@@ -29,7 +29,8 @@ namespace Numbers.Web
                 throw new Exception("Values are not distinct");
             }
 
-            int[] solutionsCount = Array.Repeat<int>(0, maximumTargetValue);
+            int[] solutionsCount = Array.Repeat<int>(0, maximumTargetValue);
+
             foreach (Number target in GetTargets(values.Select(Number.Create).ToArray()))
             {
                 if (target.Value < maximumTargetValue)
