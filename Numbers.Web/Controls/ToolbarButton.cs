@@ -48,7 +48,7 @@ namespace Numbers.Web.Controls
 
             if (IsEnabled && mouseDown != null)
             {
-                mouseDown();
+                Window.SetTimeout(mouseDown);
             }
 
             e.PreventDefault();
@@ -79,7 +79,7 @@ namespace Numbers.Web.Controls
 
             if (IsEnabled && mouseUp != null)
             {
-                mouseUp();
+                Window.SetTimeout(mouseUp);
             }
 
             e.PreventDefault();

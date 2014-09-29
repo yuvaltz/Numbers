@@ -141,7 +141,6 @@ namespace Numbers.Web.Controls
                 return;
             }
 
-
             if (IsEnabled)
             {
                 IsChecked = !IsChecked;
@@ -174,7 +173,7 @@ namespace Numbers.Web.Controls
         {
             if (IsCheckedChanged != null)
             {
-                IsCheckedChanged(this, EventArgs.Empty);
+                Window.SetTimeout(() => IsCheckedChanged(this, EventArgs.Empty));
             }
         }
     }
