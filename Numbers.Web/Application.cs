@@ -140,6 +140,8 @@ namespace Numbers.Web
 
             Document.Body.Style.Width = String.Format("{0}px", viewContainerWidth);
             Document.Body.Style.Height = String.Format("{0}px", viewContainerHeight);
+
+            Window.ScrollTo((viewContainerWidth - Window.InnerWidth) / 2, (viewContainerHeight - Window.InnerHeight) / 2);
         }
 
         private static void GetContianerDimension(int windowWidth, int windowHeight, int viewWidth, int viewHeight, ref int viewContainerWidth, ref int viewContainerHeight)
