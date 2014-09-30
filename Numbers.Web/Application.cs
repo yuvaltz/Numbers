@@ -107,8 +107,6 @@ namespace Numbers.Web
 
         private void OnGameChanged()
         {
-            Window.History.ReplaceState(null, Document.Title, String.Format("#{0}", Game));
-
             GameViewModel gameViewModel = new GameViewModel(Game, this);
             gameView = new GameView(gameViewModel);
             UpdateLayout();
