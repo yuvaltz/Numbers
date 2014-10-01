@@ -12,6 +12,7 @@ namespace Numbers.Web
         private const int HardestLevel = 1;
 
         private const string LevelConfigurationKey = "Level";
+        private const string GameHashConfigurationKey = "GameHash";
 
         private int level;
         private int Level
@@ -65,7 +66,17 @@ namespace Numbers.Web
             }
             else
             {
-                Game = GameFactory.CreateFromSolutionRange(Level, (int)((Level + 3) * 1.1));
+                string lastGameHash = configuration.GetValue(GameHashConfigurationKey);
+
+                if (!String.IsNullOrEmpty(lastGameHash))
+                {
+                    Game = GameFactory.CreateFromHash(lastGameHash);
+                }
+                else
+                {
+                    Game = GameFactory.CreateFromSolutionRange(Level, (int)((Level + 3) * 1.1));
+                }
+
                 customGame = false;
             }
 
@@ -107,6 +118,8 @@ namespace Numbers.Web
 
         private void OnGameChanged()
         {
+            configuration.SetValue(GameHashConfigurationKey, Game.ToString());
+
             GameViewModel gameViewModel = new GameViewModel(Game, this);
             gameView = new GameView(gameViewModel);
             UpdateLayout();
