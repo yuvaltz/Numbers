@@ -67,12 +67,12 @@ namespace Numbers.Web.Views
                 new Keyframe(targetBackground1.HtmlElement, "visibility", "visible", 300),
                 new MultiplePropertyTransition(targetBackground1.HtmlElement, new[] { "transform", "-webkit-transform" }, new ScaleValueBounds(1, 10), new TransitionTiming(2000), 200),
                 new Transition(targetBackground1.HtmlElement, "top", new PixelValueBounds(80, 164), new TransitionTiming(800, TimingCurve.EaseOut), 200),
-                new MultiplePropertyTransition(targetBackground1.HtmlElement, new[] { "border-radius", "-webkit-border-radius" }, new PixelValueBounds(2, 40), new TransitionTiming(1000), 200),
+                new MultiplePropertyTransition(targetBackground1.HtmlElement, new[] { "border-radius", "-webkit-border-radius" }, new PixelValueBounds(2, 40), new TransitionTiming(600), 200),
 
                 new Keyframe(targetBackground2.HtmlElement, "visibility", "visible", 500),
                 new MultiplePropertyTransition(targetBackground2.HtmlElement, new[] { "transform", "-webkit-transform" }, new ScaleValueBounds(1, 10), new TransitionTiming(1800), 500),
                 new Transition(targetBackground2.HtmlElement, "top", new PixelValueBounds(80, 164), new TransitionTiming(800, TimingCurve.EaseOut), 200),
-                new MultiplePropertyTransition(targetBackground2.HtmlElement, new [] { "border-radius", "-webkit-border-radius" }, new PixelValueBounds(2, 40), new TransitionTiming(800), 500),
+                new MultiplePropertyTransition(targetBackground2.HtmlElement, new [] { "border-radius", "-webkit-border-radius" }, new PixelValueBounds(2, 40), new TransitionTiming(400), 500),
 
                 new Keyframe(numbersCollectionView.HtmlElement, "pointerEvents", "none"),
                 new Keyframe(operatorsCollectionView.HtmlElement, "pointerEvents", "none"),
