@@ -69,7 +69,7 @@ namespace Numbers.Web.Views
             switch (@operator)
             {
                 case Operator.Add: return "+";
-                case Operator.Subtract: return "-";
+                case Operator.Subtract: return "\u2212";
                 case Operator.Multiply: return "\u00D7";
                 case Operator.Divide: return "\u00F7";
                 default: throw new Exception("Operator is not supported");
