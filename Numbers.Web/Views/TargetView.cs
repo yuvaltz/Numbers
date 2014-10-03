@@ -18,7 +18,7 @@ namespace Numbers.Web.Views
         public TargetView(int targetValue, int solutionsCount) :
             base("target-panel")
         {
-            Control solutionsLabel = new Label("target-solutions-label") { Text = String.Format("{0} solutions", solutionsCount), Top = 48 };
+            Control solutionsLabel = new Label("target-solutions-label") { Text = String.Format("{0} {1}", solutionsCount, solutionsCount == 1 ? "solution" : "solutions"), Top = 48 };
 
             Control targetLabelContainer = new Control
             {
