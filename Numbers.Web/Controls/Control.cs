@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Numbers.Web.Controls
 {
-    public class Control : IEnumerable
+    public class Control : IEnumerable, IDisposable
     {
         public Element HtmlElement { get; private set; }
 
@@ -93,6 +93,14 @@ namespace Numbers.Web.Controls
         public IEnumerator GetEnumerator()
         {
             return null;
+        }
+
+        public virtual void Dispose()
+        {
+            foreach (Control child in Children)
+            {
+                child.Dispose();
+            }
         }
     }
 }

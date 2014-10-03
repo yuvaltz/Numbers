@@ -117,16 +117,17 @@ namespace Numbers.Web
 
         private void OnGameChanged()
         {
+            if (gameView != null)
+            {
+                Document.Body.RemoveChild(gameView.HtmlElement);
+                gameView.Dispose();
+            }
+
             configuration.SetValue(GameHashConfigurationKey, Game.ToString());
 
             GameViewModel gameViewModel = new GameViewModel(Game, this);
             gameView = new GameView(gameViewModel);
             UpdateLayout();
-
-            while (Document.Body.Children.Length > 0)
-            {
-                Document.Body.RemoveChild(Document.Body.LastChild);
-            }
 
             Document.Body.AppendChild(gameView.HtmlElement);
 

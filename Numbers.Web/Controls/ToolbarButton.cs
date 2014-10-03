@@ -25,7 +25,7 @@ namespace Numbers.Web.Controls
                 Window.AddEventListener("touchstart", OnPointerDown, false);
                 Window.AddEventListener("touchend", OnPointerUp, false);
                 Window.AddEventListener("touchmove", OnPointerMove, false);
-                Window.AddEventListener("touchcancel", e => { if (IsPressed) { OnPointerUp(e); } }, false);
+                Window.AddEventListener("touchcancel", OnPointerUp, false);
             }
             else
             {
@@ -35,11 +35,23 @@ namespace Numbers.Web.Controls
             }
         }
 
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            Window.RemoveEventListener("touchstart", OnPointerDown, false);
+            Window.RemoveEventListener("touchend", OnPointerUp, false);
+            Window.RemoveEventListener("touchmove", OnPointerMove, false);
+            Window.RemoveEventListener("touchcancel", OnPointerUp, false);
+            Window.RemoveEventListener("mousedown", OnPointerDown, false);
+            Window.RemoveEventListener("mouseup", OnPointerUp, false);
+        }
+
         private void OnPointerDown(Event e)
         {
             EventTarget target = e.Target ?? e.GetSrcElement();
 
-            if (target != this.HtmlElement)
+            if (target != this.HtmlElement || IsPressed)
             {
                 return;
             }
@@ -70,7 +82,7 @@ namespace Numbers.Web.Controls
         {
             EventTarget target = e.Target ?? e.GetSrcElement();
 
-            if (target != this.HtmlElement)
+            if (target != this.HtmlElement || !IsPressed)
             {
                 return;
             }

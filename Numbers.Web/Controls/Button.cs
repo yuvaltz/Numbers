@@ -90,6 +90,14 @@ namespace Numbers.Web.Controls
             }
         }
 
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            Window.RemoveEventListener("touchstart", OnPointerDown, false);
+            Window.RemoveEventListener("mousedown", OnPointerDown, false);
+        }
+
         public void StartAppearAnimation()
         {
             ITransition animation = new ParallelTransition(

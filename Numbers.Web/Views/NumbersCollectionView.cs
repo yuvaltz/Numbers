@@ -62,13 +62,16 @@ namespace Numbers.Web.Views
 
         private void OnNumbersButtonsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            Button button = e.Item as Button;
+
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                AddButton(e.Item as Button);
+                AddButton(button);
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove)
             {
-                RemoveButton(e.Item as Button);
+                RemoveButton(button);
+                button.Dispose();
             }
             else
             {
