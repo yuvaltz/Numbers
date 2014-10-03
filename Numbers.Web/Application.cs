@@ -87,16 +87,15 @@ namespace Numbers.Web
             Window.AddEventListener("resize", e => UpdateLayout());
         }
 
-        public void NewGame(LevelChange levelChange)
+        public void NewGame()
         {
-            if (!customGame)
+            if (!customGame && Game.StepsCount > 0)
             {
-                if (levelChange == LevelChange.Easier)
+                if (!Game.IsSolved || Game.HintCount > 3)
                 {
                     Level = Math.Min(Level + Math.Max(Level / 10, 1), EasiestLevel);
                 }
-
-                if (levelChange == LevelChange.Harder)
+                else if (Game.HintCount == 0 && Game.StepsCount < 20)
                 {
                     Level = Math.Max(Level - Math.Max(Level / 10, 1), HardestLevel);
                 }
@@ -104,11 +103,7 @@ namespace Numbers.Web
 
             Game = GameFactory.CreateFromSolutionRange(LevelMinimumSolutions, LevelMaximumSolutions);
             customGame = false;
-        }
 
-        public void RestorePreviousGame()
-        {
-            //
         }
 
         private void OnHashChanged()

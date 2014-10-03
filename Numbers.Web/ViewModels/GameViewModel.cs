@@ -17,8 +17,6 @@ namespace Numbers.Web.ViewModels
         public int TargetValue { get { return model.TargetValue; } }
         public int SolutionsCount { get { return model.SolutionsCount; } }
 
-        private int stepsCount;
-        private int hintCount;
         private IGameHost host;
 
         public GameViewModel(Game model, IGameHost host)
@@ -50,12 +48,6 @@ namespace Numbers.Web.ViewModels
 
         public void Undo()
         {
-            if (stepsCount == 0)
-            {
-                host.RestorePreviousGame();
-                return;
-            }
-
             Number number = model.Pop();
 
             if (number == null)
@@ -73,10 +65,7 @@ namespace Numbers.Web.ViewModels
 
         public Number Hint()
         {
-            Number number = model.Hint();
-            hintCount++;
-
-            return number;
+            return model.Hint();
         }
 
         public void SetSelection(Number number)
@@ -94,21 +83,7 @@ namespace Numbers.Web.ViewModels
 
         public void NewGame()
         {
-            LevelChange levelChange = LevelChange.Same;
-
-            if (stepsCount > 0)
-            {
-                if (!model.IsSolved || hintCount > 3)
-                {
-                    levelChange = LevelChange.Easier;
-                }
-                else if (hintCount == 0 && stepsCount < 20)
-                {
-                    levelChange = LevelChange.Harder;
-                }
-            }
-
-            host.NewGame(levelChange);
+            host.NewGame();
         }
 
         public void TryCalculate()
@@ -132,8 +107,6 @@ namespace Numbers.Web.ViewModels
         private void Push(Number number)
         {
             model.Push(number);
-
-            stepsCount++;
 
             Numbers.Remove(Numbers.FirstOrDefault(vm => vm.Model == number.Operand1));
             Numbers.Remove(Numbers.FirstOrDefault(vm => vm.Model == number.Operand2));
