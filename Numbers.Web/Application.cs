@@ -25,6 +25,10 @@ namespace Numbers.Web
             }
         }
 
+        private int LevelMinimumSolutions { get { return Level; } }
+
+        private int LevelMaximumSolutions { get { return Level + Math.Max(Level / 10, 3); } }
+
         private Game game;
         private Game Game
         {
@@ -74,7 +78,7 @@ namespace Numbers.Web
                 }
                 else
                 {
-                    Game = GameFactory.CreateFromSolutionRange(Level, (int)((Level + 3) * 1.1));
+                    Game = GameFactory.CreateFromSolutionRange(LevelMinimumSolutions, LevelMaximumSolutions);
                 }
 
                 customGame = false;
@@ -89,16 +93,16 @@ namespace Numbers.Web
             {
                 if (levelChange == LevelChange.Easier)
                 {
-                    Level = (int)Math.Min((double)Level * 1.1, EasiestLevel);
+                    Level = Math.Min(Level + Math.Max(Level / 10, 1), EasiestLevel);
                 }
 
                 if (levelChange == LevelChange.Harder)
                 {
-                    Level = (int)Math.Max((double)Level * 0.9, HardestLevel);
+                    Level = Math.Max(Level - Math.Max(Level / 10, 1), HardestLevel);
                 }
             }
 
-            Game = GameFactory.CreateFromSolutionRange(Level, (int)((Level + 3) * 1.1));
+            Game = GameFactory.CreateFromSolutionRange(LevelMinimumSolutions, LevelMaximumSolutions);
             customGame = false;
         }
 
