@@ -14,7 +14,7 @@ namespace Numbers.Web
         public int SolutionsCount { get; private set; }
         public bool IsSolved { get { return CurrentNumbers.Count() == 1 && CurrentNumbers.First().Value == TargetValue; } }
         public int StepsCount { get; private set; }
-        public int HintCount { get; private set; }
+        public int HintsCount { get; private set; }
 
         private Stack<Number> stack;
 
@@ -79,7 +79,7 @@ namespace Numbers.Web
 
             Number solution = Solver.GetSolutions(numbers, TargetValue).FirstOrDefault();
 
-            HintCount++;
+            HintsCount++;
 
             return solution != null ? Solver.FindInitialOperation(solution, numbers) : null;
         }

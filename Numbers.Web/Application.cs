@@ -48,6 +48,7 @@ namespace Numbers.Web
         private IConfiguration configuration;
         private bool customGame;
         private GameView gameView;
+        private Statistics statistics;
 
         public Application()
         {
@@ -57,6 +58,8 @@ namespace Numbers.Web
         public void Run()
         {
             configuration = new Configuration();
+            statistics = new Statistics(configuration);
+            statistics.ReportSessionStart();
 
             int storedLevel;
             level = Int32.TryParse(configuration.GetValue(LevelConfigurationKey), out storedLevel) ? storedLevel : DefaultLevel;
@@ -85,17 +88,20 @@ namespace Numbers.Web
             }
 
             Window.AddEventListener("resize", e => UpdateLayout());
+            Window.AddEventListener("unload", e => statistics.ReportSessionEnd());
         }
 
         public void NewGame()
         {
+            statistics.ReportGameEnd();
+
             if (!customGame && Game.StepsCount > 0)
             {
-                if (!Game.IsSolved || Game.HintCount > 3)
+                if (!Game.IsSolved || Game.HintsCount > 3)
                 {
                     Level = Math.Min(Level + Math.Max(Level / 10, 1), EasiestLevel);
                 }
-                else if (Game.HintCount == 0 && Game.StepsCount < 20)
+                else if (Game.HintsCount == 0 && Game.StepsCount < 20)
                 {
                     Level = Math.Max(Level - Math.Max(Level / 10, 1), HardestLevel);
                 }
@@ -103,7 +109,6 @@ namespace Numbers.Web
 
             Game = GameFactory.CreateFromSolutionRange(LevelMinimumSolutions, LevelMaximumSolutions);
             customGame = false;
-
         }
 
         private void OnHashChanged()
@@ -124,6 +129,9 @@ namespace Numbers.Web
             }
 
             configuration.SetValue(GameHashConfigurationKey, Game.ToString());
+
+            statistics.ReportGameStart(Game);
+            Game.Solved += (sender, e) => statistics.ReportGameEnd();
 
             GameViewModel gameViewModel = new GameViewModel(Game, this);
             gameView = new GameView(gameViewModel);

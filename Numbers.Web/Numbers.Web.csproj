@@ -38,6 +38,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Statistics.cs" />
     <Compile Include="Application.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Controls\Button.cs" />
