@@ -6,6 +6,8 @@ namespace Numbers.Web
 {
     public class Game
     {
+        public event EventHandler Solved;
+
         public IEnumerable<int> InitialValues { get; private set; }
         public IEnumerable<Number> CurrentNumbers { get; private set; }
         public int TargetValue { get; private set; }
@@ -45,12 +47,13 @@ namespace Numbers.Web
                 Where(number => number != result.Operand1 && number != result.Operand2).
                 Concat(new[] { result }).ToArray();
 
+            StepsCount++;
+
             if (IsSolved)
             {
                 Console.WriteLine(String.Format("Solved {0}={1}", result.Value, result.ToString(false, true)));
+                RaiseSolved();
             }
-
-            StepsCount++;
         }
 
         public Number Pop()
@@ -79,6 +82,14 @@ namespace Numbers.Web
             HintCount++;
 
             return solution != null ? Solver.FindInitialOperation(solution, numbers) : null;
+        }
+
+        private void RaiseSolved()
+        {
+            if (Solved != null)
+            {
+                Solved(this, EventArgs.Empty);
+            }
         }
     }
 }
