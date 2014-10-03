@@ -9,7 +9,7 @@ namespace Numbers.Web.Views
     public class GameView : Control
     {
         public const int Width = 600;
-        public const int Height = 340;
+        public const int Height = 336;
 
         private GameViewModel viewModel;
 
@@ -57,8 +57,6 @@ namespace Numbers.Web.Views
                 targetBackgroundOverlay1,
                 targetBackgroundOverlay2,
             });
-
-            AppendChild(new Control("frame-shadow"));
 
             viewModel.SelectionChanged += OnSelectionChanged;
             viewModel.Solved += OnSolved;

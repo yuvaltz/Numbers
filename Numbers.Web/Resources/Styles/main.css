@@ -21,7 +21,7 @@ div.root
 {
     position: absolute;
     width: 600px;
-    height: 340px;
+    height: 336px;
 }
 
 div.frame
@@ -29,25 +29,11 @@ div.frame
     overflow: hidden;
     position: absolute;
     width: 600px;
+    height: 336px;
     background: #f5f5f5;
     border-radius: 2px;
     -webkit-border-radius: 2px;
-}	
-
-div.frame-shadow
-{
-    position: absolute;
-    width: 600px;
-    border-radius: 2px;
-    -webkit-border-radius: 2px;
     box-shadow: 0px 4px 8px -2px rgba(0, 0, 0, 0.5);
-    z-index: 1;
-}
-
-div.frame
-{
-    height: 344px;
-    z-index: 3;
 }
 
 div.label.target-label
@@ -57,7 +43,7 @@ div.label.target-label
     font-size: 48px;
     color: rgba(66, 66, 66, 0.87);
     text-align: center;
-    line-height: 58px;
+    line-height: 64px;
     cursor: default;
 }
 
@@ -76,18 +62,13 @@ div.target-panel
 {
     position: absolute;
     overflow: hidden;
-    top: 280px;
+    top: 272px;
     height: 64px;
     width: 600px;
     border-top: 2px solid #bdbdbd;
     -webkit-border-top: 2px solid #bdbdbd;
     background: #f5f5f5;
     opacity: 0;
-}
-
-div.frame + div.frame-shadow
-{
-    height: 344px;
 }
 
 div.toolbar
