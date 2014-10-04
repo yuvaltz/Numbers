@@ -135,6 +135,11 @@ namespace Numbers.Web
                 toolsView.Dispose();
             }
 
+            if (Game.ToString() != Window.Location.Hash.TrimStart('#'))
+            {
+                Window.History.ReplaceState(null, Document.Title, Window.Location.Href.Substring(0, Window.Location.Href.IndexOf("#")));
+            }
+
             configuration.SetValue(GameHashConfigurationKey, Game.ToString());
 
             statistics.ReportGameStart(Game);
