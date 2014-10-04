@@ -48,6 +48,7 @@ namespace Numbers.Web
         private IConfiguration configuration;
         private bool customGame;
         private GameView gameView;
+        private ToolsView toolsView;
         private Statistics statistics;
 
         public Application()
@@ -128,6 +129,12 @@ namespace Numbers.Web
                 gameView.Dispose();
             }
 
+            if (toolsView != null)
+            {
+                Document.Body.RemoveChild(toolsView.HtmlElement);
+                toolsView.Dispose();
+            }
+
             configuration.SetValue(GameHashConfigurationKey, Game.ToString());
 
             statistics.ReportGameStart(Game);
@@ -135,16 +142,18 @@ namespace Numbers.Web
 
             GameViewModel gameViewModel = new GameViewModel(Game, this);
             gameView = new GameView(gameViewModel);
+            toolsView = new ToolsView(Game.ToString());
             UpdateLayout();
 
             Document.Body.AppendChild(gameView.HtmlElement);
+            Document.Body.AppendChild(toolsView.HtmlElement);
 
             gameView.Run();
         }
 
         private void UpdateLayout()
         {
-            if (gameView == null)
+            if (gameView == null || toolsView == null)
             {
                 return;
             }
@@ -156,6 +165,8 @@ namespace Numbers.Web
 
             gameView.Left = (viewContainerWidth - GameView.Width) / 2;
             gameView.Top = (viewContainerHeight - GameView.Height) / 2;
+
+            toolsView.HtmlElement.Style.Visibility = viewContainerWidth < gameView.Left + GameView.Width + ToolsView.Width + 8 && viewContainerHeight < gameView.Top + GameView.Height + ToolsView.Height + 8 ? "collapse" : "visible";
 
             Document.Body.Style.Width = String.Format("{0}px", viewContainerWidth);
             Document.Body.Style.Height = String.Format("{0}px", viewContainerHeight);

@@ -79,6 +79,7 @@
     <Compile Include="Views\OperatorsCollectionView.cs" />
     <Compile Include="Views\TargetView.cs" />
     <Compile Include="Views\ToolbarView.cs" />
+    <Compile Include="Views\ToolsView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

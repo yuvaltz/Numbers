@@ -25,7 +25,7 @@ namespace Numbers.Web.Views
         private bool newGameRequested;
 
         public GameView(GameViewModel viewModel) :
-            base("root")
+            base("game-panel")
         {
             this.viewModel = viewModel;
 

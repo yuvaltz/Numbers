@@ -17,7 +17,7 @@ body
     user-select: none;
 }
 
-div.root
+div.game-panel
 {
     position: absolute;
     width: 600px;
@@ -187,4 +187,49 @@ div.header
     text-align: center;
     color: #424242;
     opacity: 0.54;
+}
+
+div.tools-panel
+{
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    width: 296px;
+    height: 32px;
+    font-size: 24px;
+    color: rgba(0, 0, 0, 0.26);
+    line-height: 30px;
+}
+
+a.permalink
+{
+    position: absolute;
+    left: 0px;
+    color: rgba(0, 0, 0, 0.26);
+    text-decoration:none;
+}
+
+a.permalink:visited
+{
+    color: rgba(0, 0, 0, 0.26);
+}
+
+a.permalink:hover
+{
+    color: rgba(0, 0, 0, 0.26);
+}
+
+div.label.share-label
+{
+    position: absolute;
+    left: 120px;
+    cursor: pointer;
+    color: #e91e63;
+}
+
+div.label.about-label
+{
+    position: absolute;
+    left: 224px;
+    cursor: pointer;
 }
