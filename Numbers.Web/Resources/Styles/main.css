@@ -233,3 +233,42 @@ div.label.about-label
     left: 224px;
     cursor: pointer;
 }
+
+div.dialog-container
+{
+    z-index: 6;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+div.dialog
+{
+    position: absolute;
+    background: #ffffff;
+    box-shadow: 0px 16px 24px 0px rgba(0, 0, 0, 0.3);
+}
+
+div.dialog.share
+{
+    width: 500px;
+    height: 300px;
+}
+
+div.dialog.about
+{
+    width: 300px;
+    height: 150px;
+    text-align: center;
+}
+
+div.label.about-dialog-header
+{
+    font-family: 'Lobster', sans-serif;
+    font-size: 44px;
+    line-height: 64px;
+    color: #03a9f4;
+}

@@ -38,7 +38,17 @@ namespace Numbers.Web.Controls
             Window.AddEventListener("touchstart", OnPointerDown, false);
             Window.AddEventListener("mousedown", OnPointerDown, false);
 
-            Window.AddEventListener("resize", e => UpdateLayout());
+            Window.AddEventListener("resize", UpdateLayout);
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            Window.RemoveEventListener("touchstart", OnPointerDown, false);
+            Window.RemoveEventListener("mousedown", OnPointerDown, false);
+
+            Window.RemoveEventListener("resize", UpdateLayout);
         }
 
         public void ShowDialog(Control dialog, int dialogWidth, int dialogHeight)

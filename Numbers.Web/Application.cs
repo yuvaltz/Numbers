@@ -2,6 +2,7 @@
 using System.Html;
 using Numbers.Web.ViewModels;
 using Numbers.Web.Views;
+using Numbers.Web.Controls;
 
 namespace Numbers.Web
 {
@@ -46,6 +47,7 @@ namespace Numbers.Web
         }
 
         private IConfiguration configuration;
+        private DialogContainer dialogContainer;
         private bool customGame;
         private GameView gameView;
         private ToolsView toolsView;
@@ -59,14 +61,25 @@ namespace Numbers.Web
         public void Run()
         {
             configuration = new Configuration();
+            dialogContainer = new DialogContainer();
+
             statistics = new Statistics(configuration);
             statistics.ReportSessionStart();
 
             int storedLevel;
             level = Int32.TryParse(configuration.GetValue(LevelConfigurationKey), out storedLevel) ? storedLevel : DefaultLevel;
 
-            Window.AddEventListener("hashchange", e => OnHashChanged());
+            Document.Body.AppendChild(dialogContainer.HtmlElement);
 
+            Window.AddEventListener("hashchange", e => OnHashChanged());
+            Window.AddEventListener("resize", e => UpdateLayout());
+            Window.AddEventListener("unload", e => statistics.ReportSessionEnd());
+
+            CreateInitialGame();
+        }
+
+        private void CreateInitialGame()
+        {
             if (!String.IsNullOrEmpty(Window.Location.Hash))
             {
                 Game = GameFactory.CreateFromHash(Window.Location.Hash.TrimStart('#'));
@@ -87,9 +100,6 @@ namespace Numbers.Web
 
                 customGame = false;
             }
-
-            Window.AddEventListener("resize", e => UpdateLayout());
-            Window.AddEventListener("unload", e => statistics.ReportSessionEnd());
         }
 
         public void NewGame()
@@ -147,7 +157,7 @@ namespace Numbers.Web
 
             GameViewModel gameViewModel = new GameViewModel(Game, this);
             gameView = new GameView(gameViewModel);
-            toolsView = new ToolsView(Game.ToString());
+            toolsView = new ToolsView(dialogContainer, Game.ToString());
             UpdateLayout();
 
             Document.Body.AppendChild(gameView.HtmlElement);
