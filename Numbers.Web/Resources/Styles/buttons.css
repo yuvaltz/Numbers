@@ -87,15 +87,15 @@ div.toolbar-button:hover
 
 div.image-new
 {
-    background-image: url('ic_action_new_dark.png');
+    background-image: url('new.png');
 }
 
 div.image-help
 {
-    background-image: url('ic_action_help_dark.png');
+    background-image: url('help.png');
 }
 
 div.image-undo
 {
-    background-image: url('ic_action_undo_dark.png');
+    background-image: url('undo.png');
 }

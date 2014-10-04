@@ -100,9 +100,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Images\ic_action_help_dark.png" />
-    <Content Include="Resources\Images\ic_action_new_dark.png" />
-    <Content Include="Resources\Images\ic_action_undo_dark.png" />
+    <Content Include="Resources\Images\help.png" />
+    <Content Include="Resources\Images\new.png" />
+    <Content Include="Resources\Images\undo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.2.4.0\tools\Saltarelle.Compiler.targets')" />
   <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.2.4.0\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.2.4.0\tools\Saltarelle.Compiler.targets')" />
