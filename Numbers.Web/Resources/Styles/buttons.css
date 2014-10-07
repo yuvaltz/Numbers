@@ -99,3 +99,37 @@ div.image-undo
 {
     background-image: url('undo.png');
 }
+
+div.share-button
+{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    height: 40px;
+    cursor: pointer;
+}
+
+div.share-button:hover
+{
+    background: rgba(0, 0, 0, 0.1);
+}
+
+div.share-button div.label
+{
+    position: absolute;
+    left: 40px;
+    line-height: 40px;
+    cursor: pointer;
+}
+
+div.share-button-image
+{
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    background-image: url('social.png');
+    background-size: 384px 32px;
+}

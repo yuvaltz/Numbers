@@ -1,13 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Numbers.Web.Controls;
 using System.Html;
+using System.Web;
 
 namespace Numbers.Web.Views
 {
     public class ToolsView : Control
     {
+        private class ShareService
+        {
+            public int ImageIndex { get; private set; }
+            public string Header { get; private set; }
+            public string UrlFormat { get; private set; }
+
+            public ShareService(int imageIndex, string header, string urlFormat)
+            {
+                this.ImageIndex = imageIndex;
+                this.Header = header;
+                this.UrlFormat = urlFormat;
+            }
+        }
+
+        private static readonly ShareService[] ShareServices = new[]
+        {
+            new ShareService(0, "Facebook", "http://www.facebook.com/share.php?u={0}"),
+            new ShareService(1, "Twitter", "http://twitter.com/share?text={2}&url={0}&hashtags=Numbers"),
+            new ShareService(2, "Google+", "http://plus.google.com/share?url={0}"),
+            new ShareService(3, "LinkedIn", "http://www.linkedin.com/shareArticle?mini=true&url={0}&title={1}&summary={2}"),
+            new ShareService(4, "Pinterest", "http://pinterest.com/pin/create/button/?url={0}&media={3}&description={1}%20-%20{2}"),
+            new ShareService(5, "Tumblr", "http://www.tumblr.com/share?v=3&u={0}&t={1}&s={2}"),
+            new ShareService(6, "StumbleUpon", "http://www.stumbleupon.com/submit?url={0}&title={1}"),
+            new ShareService(7, "Reddit", "http://reddit.com/submit?url={0}&title={1}"),
+            new ShareService(8, "Delicious", "http://delicious.com/post?url={0}&title={1}%20-%20{2}"),
+            new ShareService(9, "Digg", "http://digg.com/submit?phase=2&url={0}&title={1}&bodytext={2}"),
+            new ShareService(10, "Blogger", "http://www.blogger.com/blog_this.pyra?t={1}&u={0}"),
+            new ShareService(11, "Email", "mailto:?subject={1}&body={2}%20-%20{0}"),
+        };
+
         public const int Width = 296;
         public const int Height = 32;
 
@@ -15,10 +47,10 @@ namespace Numbers.Web.Views
         private Control aboutDialog;
         private Control shareDialog;
 
-        public ToolsView(IDialogContainer dialogService, string gameHash) :
+        public ToolsView(IDialogContainer dialogContainer, string gameHash) :
             base("tools-panel")
         {
-            this.dialogContainer = dialogService;
+            this.dialogContainer = dialogContainer;
 
             Element permalinkElement = Document.CreateElement("a");
             permalinkElement.ClassName = "permalink";
@@ -58,15 +90,36 @@ namespace Numbers.Web.Views
 
         private Control CreateShareDialog()
         {
-            Element iframe = Document.CreateElement("iframe");
-            iframe.SetAttribute("src", "http://expando.github.io/add/?u=http%3A%2F%2Fyuvaltz.github.io%2Fnumbers&t=A%20numberful%20game");
-            iframe.SetAttribute("frameborder", "0");
-            iframe.SetAttribute("frametransparency", "1");
-            iframe.SetAttribute("width", "500");
-            iframe.SetAttribute("height", "300");
+            IEnumerable<Element> metaElements = Document.GetElementsByTagName("meta").ToArray();
+
+            string title = HttpUtility.UrlPathEncode(metaElements.Where(element => element.GetAttribute("property") == "og:title").First().GetAttribute("content"));
+            string description = HttpUtility.UrlPathEncode(metaElements.Where(element => element.GetAttribute("property") == "og:description").First().GetAttribute("content"));
+            string image = HttpUtility.UrlEncode(metaElements.Where(element => element.GetAttribute("property") == "og:image").First().GetAttribute("content"));
+            string url = HttpUtility.UrlEncode("http://git.io/numbers");
 
             Control dialog = new Control("dialog", "share");
-            dialog.HtmlElement.AppendChild(iframe);
+
+            int top = 0;
+
+            foreach (ShareService shareService in ShareServices)
+            {
+                Control buttonImage = new Control("share-button-image");
+                buttonImage.HtmlElement.Style.BackgroundPosition = String.Format("{0}px 0px", -32 * shareService.ImageIndex);
+
+                Control button = new Control("share-button")
+                {
+                    buttonImage,
+                    new Label("share-button-label") { Text = shareService.Header }
+                };
+
+                string shareServiceUrl = String.Format(shareService.UrlFormat, url, title, description, image);
+                button.HtmlElement.AddEventListener("click", () => Window.Open(shareServiceUrl));
+
+                button.Top = top;
+                top += 40;
+
+                dialog.AppendChild(button);
+            };
 
             return dialog;
         }

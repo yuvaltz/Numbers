@@ -105,6 +105,7 @@
   <ItemGroup>
     <Content Include="Resources\Images\help.png" />
     <Content Include="Resources\Images\new.png" />
+    <Content Include="Resources\Images\social.png" />
     <Content Include="Resources\Images\thumbnail.png" />
     <Content Include="Resources\Images\undo.png" />
   </ItemGroup>

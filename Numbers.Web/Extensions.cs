@@ -79,4 +79,19 @@ namespace Numbers.Web
             return null;
         }
     }
+
+    public static class ElementCollectionExtensions
+    {
+        public static Element[] ToArray(this ElementCollection collection)
+        {
+            Element[] array = new Element[collection.Length];
+
+            for (int i = 0; i < collection.Length; i++)
+            {
+                array[i] = collection[i];
+            }
+
+            return array;
+        }
+    }
 }

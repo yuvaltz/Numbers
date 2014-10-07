@@ -250,12 +250,15 @@ div.dialog
     position: absolute;
     background: #ffffff;
     box-shadow: 0px 16px 24px 0px rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
 }
 
 div.dialog.share
 {
     width: 500px;
     height: 300px;
+    overflow-y: scroll;
 }
 
 div.dialog.about
@@ -271,4 +274,16 @@ div.label.about-dialog-header
     font-size: 44px;
     line-height: 64px;
     color: #03a9f4;
+}
+
+div.link.share
+{
+    line-height: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+div.link.share:hover
+{
+    background: rgba(0, 0, 0, 0.3);
 }
