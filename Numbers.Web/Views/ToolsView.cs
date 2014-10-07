@@ -44,13 +44,15 @@ namespace Numbers.Web.Views
         public const int Height = 32;
 
         private IDialogContainer dialogContainer;
+        private Statistics statistics;
         private Control aboutDialog;
         private Control shareDialog;
 
-        public ToolsView(IDialogContainer dialogContainer, string gameHash) :
+        public ToolsView(IDialogContainer dialogContainer, Statistics statistics, string gameHash) :
             base("tools-panel")
         {
             this.dialogContainer = dialogContainer;
+            this.statistics = statistics;
 
             Element permalinkElement = Document.CreateElement("a");
             permalinkElement.ClassName = "permalink";
@@ -112,8 +114,14 @@ namespace Numbers.Web.Views
                     new Label("share-button-label") { Text = shareService.Header }
                 };
 
+                string shareServiceHeader = shareService.Header;
                 string shareServiceUrl = String.Format(shareService.UrlFormat, url, title, description, image);
-                button.HtmlElement.AddEventListener("click", () => Window.Open(shareServiceUrl));
+
+                button.HtmlElement.AddEventListener("click", () =>
+                {
+                    statistics.ReportShare(shareServiceHeader);
+                    Window.Open(shareServiceUrl);
+                });
 
                 button.Top = top;
                 top += 40;

@@ -157,7 +157,7 @@ namespace Numbers.Web
 
             GameViewModel gameViewModel = new GameViewModel(Game, this);
             gameView = new GameView(gameViewModel);
-            toolsView = new ToolsView(dialogContainer, Game.ToString());
+            toolsView = new ToolsView(dialogContainer, statistics, Game.ToString());
             UpdateLayout();
 
             Document.Body.AppendChild(gameView.HtmlElement);

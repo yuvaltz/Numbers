@@ -99,6 +99,11 @@ namespace Numbers.Web
             currentGame = null;
         }
 
+        public void ReportShare(string shareServiceName)
+        {
+            SendEvent("Share", shareServiceName);
+        }
+
         private static string GetSolutionsCategory(int solutionsCount)
         {
             int rangeSize;
