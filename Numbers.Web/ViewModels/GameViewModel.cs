@@ -102,6 +102,8 @@ namespace Numbers.Web.ViewModels
             {
                 Push(result);
             }
+
+            operatorViewModel.IsSelected = false;
         }
 
         private void Push(Number number)
