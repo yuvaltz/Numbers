@@ -61,6 +61,9 @@ namespace Numbers.Web.Views
         private Control aboutDialog;
         private Control shareDialog;
 
+        private bool shareTooltipAdded;
+        private bool shareTooltipRemoved;
+
         public ToolsView(IDialogContainer dialogContainer, Statistics statistics) :
             base("tools-panel")
         {
@@ -89,7 +92,31 @@ namespace Numbers.Web.Views
                 shareDialog = CreateShareDialog();
             }
 
-            dialogContainer.ShowDialog(shareDialog, 500, 300);
+            if (shareTooltipRemoved)
+            {
+                dialogContainer.ShowDialog(shareDialog, 500, 300);
+            }
+            else if (!shareTooltipAdded)
+            {
+                Tooltip tooltip = new Tooltip("Thank you!", Direction.Bottom, 20) { Top = -48, Left = 112 };
+
+                AppendChild(tooltip);
+                shareTooltipAdded = true;
+
+                tooltip.StartAppearAnimation();
+
+                Window.SetTimeout(() =>
+                {
+                    tooltip.StartDisappearAnimation();
+                    dialogContainer.ShowDialog(shareDialog, 500, 300);
+                }, 2000);
+
+                Window.SetTimeout(() =>
+                {
+                    RemoveChild(tooltip);
+                    shareTooltipRemoved = true;
+                }, 2100);
+            }
         }
 
         private void OnAboutMouseDown(Event e)
