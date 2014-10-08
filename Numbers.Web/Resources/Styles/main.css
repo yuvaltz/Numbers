@@ -287,3 +287,42 @@ div.link.share:hover
 {
     background: rgba(0, 0, 0, 0.3);
 }
+
+div.tooltip
+{
+    position: absolute;
+}
+
+div.tooltip-arrow
+{
+    position: absolute;
+    height: 12px;
+    width: 12px;
+    margin: -6px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    background: #616161;
+    z-index: 0;
+}
+
+div.tooltip-container
+{
+    position: absolute;
+    background: #616161;
+    border-radius: 2px;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 1;
+}
+
+div.tooltip-label
+{
+    position: absolute;
+    padding: 2px 8px;
+    color: #fff176;
+    font-size: 22px;
+    white-space: nowrap;
+    z-index: 2;
+}

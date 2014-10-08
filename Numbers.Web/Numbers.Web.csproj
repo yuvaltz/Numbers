@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Controls\Link.cs" />
     <Compile Include="Controls\DialogContainer.cs" />
+    <Compile Include="Controls\Tooltip.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="Application.cs" />
     <Compile Include="Configuration.cs" />
