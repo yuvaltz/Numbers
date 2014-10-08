@@ -8,27 +8,23 @@ namespace Numbers.Web
 {
     public class Application : IGameHost
     {
-        private const int EasiestLevel = 120;
-        private const int DefaultLevel = 80;
-        private const int HardestLevel = 1;
+        private const int EasiestLevel = 0;
+        private const int DefaultLevel = 20;
+        private const int HardestLevel = 100;
 
-        private const string LevelConfigurationKey = "Level";
+        private const string GameLevelConfigurationKey = "GameLevel";
         private const string GameHashConfigurationKey = "GameHash";
 
-        private int level;
-        private int Level
+        private int gameLevel;
+        private int GameLevel
         {
-            get { return level; }
+            get { return gameLevel; }
             set
             {
-                level = value;
-                configuration.SetValue(LevelConfigurationKey, value.ToString());
+                gameLevel = value;
+                configuration.SetValue(GameLevelConfigurationKey, value.ToString());
             }
         }
-
-        private int LevelMinimumSolutions { get { return Level; } }
-
-        private int LevelMaximumSolutions { get { return Level + Math.Max(Level / 10, 3); } }
 
         private Game game;
         private Game Game
@@ -66,8 +62,8 @@ namespace Numbers.Web
             statistics = new Statistics(configuration);
             statistics.ReportSessionStart();
 
-            int storedLevel;
-            level = Int32.TryParse(configuration.GetValue(LevelConfigurationKey), out storedLevel) ? storedLevel : DefaultLevel;
+            int storedGameLevel;
+            gameLevel = Int32.TryParse(configuration.GetValue(GameLevelConfigurationKey), out storedGameLevel) ? storedGameLevel : DefaultLevel;
 
             Document.Body.AppendChild(dialogContainer.HtmlElement);
 
@@ -95,7 +91,7 @@ namespace Numbers.Web
                 }
                 else
                 {
-                    Game = GameFactory.CreateFromSolutionRange(LevelMinimumSolutions, LevelMaximumSolutions);
+                    Game = GameFactory.CreateFromLevel(GameLevel);
                 }
 
                 customGame = false;
@@ -110,15 +106,15 @@ namespace Numbers.Web
             {
                 if (!Game.IsSolved || Game.HintsCount > 3)
                 {
-                    Level = Math.Min(Level + Math.Max(Level / 10, 1), EasiestLevel);
+                    GameLevel = Math.Max(GameLevel - Math.Max((100 - GameLevel) / 10, 1), EasiestLevel);
                 }
                 else if (Game.HintsCount == 0 && Game.StepsCount < 20)
                 {
-                    Level = Math.Max(Level - Math.Max(Level / 10, 1), HardestLevel);
+                    GameLevel = Math.Min(GameLevel + Math.Max((100 - GameLevel) / 10, 1), HardestLevel);
                 }
             }
 
-            Game = GameFactory.CreateFromSolutionRange(LevelMinimumSolutions, LevelMaximumSolutions);
+            Game = GameFactory.CreateFromLevel(GameLevel);
             customGame = false;
         }
 
