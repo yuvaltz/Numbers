@@ -71,8 +71,11 @@ namespace Numbers.Web.Controls
 
         public void RemoveChild(Control child)
         {
-            children.Remove(child);
-            HtmlElement.RemoveChild(child.HtmlElement);
+            if (children.Contains(child))
+            {
+                children.Remove(child);
+                HtmlElement.RemoveChild(child.HtmlElement);
+            }
         }
 
         public int ChildIndex(Control child)
