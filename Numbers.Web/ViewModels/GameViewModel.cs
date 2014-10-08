@@ -11,6 +11,7 @@ namespace Numbers.Web.ViewModels
 
         public event EventHandler Solved;
         public event EventHandler SelectionChanged;
+        public event EventHandler NumbersChanged;
 
         public ObservableCollection<NumberViewModel> Numbers { get; private set; }
         public IEnumerable<OperatorViewModel> Operators { get; private set; }
@@ -61,6 +62,8 @@ namespace Numbers.Web.ViewModels
             InsertNumber(new NumberViewModel(number.Operand2, source: CreationSource.Undo));
 
             ClearSelection();
+
+            RaiseNumbersChanged();
         }
 
         public Number Hint()
@@ -120,6 +123,8 @@ namespace Numbers.Web.ViewModels
 
             InsertNumber(resultViewModel);
 
+            RaiseNumbersChanged();
+
             if (model.IsSolved)
             {
                 RaiseSolved();
@@ -150,6 +155,14 @@ namespace Numbers.Web.ViewModels
             foreach (NumberViewModel numberViewModel in Numbers)
             {
                 numberViewModel.IsSelected = false;
+            }
+        }
+
+        private void RaiseNumbersChanged()
+        {
+            if (NumbersChanged != null)
+            {
+                NumbersChanged(this, EventArgs.Empty);
             }
         }
 
