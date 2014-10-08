@@ -78,6 +78,7 @@
     <Compile Include="ViewModels\OperatorViewModel.cs" />
     <Compile Include="ViewModels\SelectableViewModel.cs" />
     <Compile Include="Views\GameView.cs" />
+    <Compile Include="Views\HelpView.cs" />
     <Compile Include="Views\NumbersCollectionView.cs" />
     <Compile Include="Views\OperatorsCollectionView.cs" />
     <Compile Include="Views\TargetView.cs" />

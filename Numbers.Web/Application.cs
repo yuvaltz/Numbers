@@ -48,6 +48,7 @@ namespace Numbers.Web
         private GameView gameView;
         private ToolsView toolsView;
         private Statistics statistics;
+        private bool firstTime;
 
         public Application()
         {
@@ -65,7 +66,15 @@ namespace Numbers.Web
             toolsView = new ToolsView(dialogContainer, statistics);
 
             int storedGameLevel;
-            gameLevel = Int32.TryParse(configuration.GetValue(GameLevelConfigurationKey), out storedGameLevel) ? storedGameLevel : DefaultLevel;
+            if (Int32.TryParse(configuration.GetValue(GameLevelConfigurationKey), out storedGameLevel))
+            {
+                gameLevel = storedGameLevel;
+            }
+            else
+            {
+                gameLevel = DefaultLevel;
+                firstTime = true;
+            }
 
             Document.Body.AppendChild(toolsView.HtmlElement);
             Document.Body.AppendChild(dialogContainer.HtmlElement);
@@ -105,7 +114,7 @@ namespace Numbers.Web
         {
             statistics.ReportGameEnd();
 
-            if (!customGame && Game.StepsCount > 0)
+            if (!customGame && !firstTime && Game.StepsCount > 0)
             {
                 if (!Game.IsSolved || Game.HintsCount > 3)
                 {
@@ -134,6 +143,7 @@ namespace Numbers.Web
         {
             if (gameView != null)
             {
+                firstTime = false;
                 Document.Body.RemoveChild(gameView.HtmlElement);
                 gameView.Dispose();
             }
@@ -149,7 +159,7 @@ namespace Numbers.Web
             Game.Solved += (sender, e) => statistics.ReportGameEnd();
 
             GameViewModel gameViewModel = new GameViewModel(Game, this);
-            gameView = new GameView(gameViewModel);
+            gameView = new GameView(gameViewModel, firstTime);
             toolsView.GameHash = Game.ToString();
             UpdateLayout();
 

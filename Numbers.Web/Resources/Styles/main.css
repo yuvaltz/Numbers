@@ -236,7 +236,7 @@ div.label.about-label
 
 div.dialog-container
 {
-    z-index: 6;
+    z-index: 7;
     position: fixed;
     left: 0px;
     right: 0px;
@@ -286,6 +286,12 @@ div.link.share
 div.link.share:hover
 {
     background: rgba(0, 0, 0, 0.3);
+}
+
+div.help-overlay
+{
+    position: absolute;
+    z-index: 6;
 }
 
 div.tooltip

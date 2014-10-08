@@ -17,6 +17,7 @@ namespace Numbers.Web.Views
         private NumbersCollectionView numbersCollectionView;
         private OperatorsCollectionView operatorsCollectionView;
         private TargetView targetView;
+        private HelpView helpView;
 
         private ITransition solveAppearAnimation;
         private ITransition solveDisappearAnimation;
@@ -24,7 +25,7 @@ namespace Numbers.Web.Views
         private bool solved;
         private bool newGameRequested;
 
-        public GameView(GameViewModel viewModel) :
+        public GameView(GameViewModel viewModel, bool showHelp) :
             base("game-panel")
         {
             this.viewModel = viewModel;
@@ -57,6 +58,12 @@ namespace Numbers.Web.Views
                 targetBackgroundOverlay1,
                 targetBackgroundOverlay2,
             });
+
+            if (showHelp)
+            {
+                helpView = new HelpView(viewModel);
+                this.AppendChild(helpView);
+            }
 
             viewModel.SelectionChanged += OnSelectionChanged;
             viewModel.Solved += OnSolved;
@@ -128,6 +135,11 @@ namespace Numbers.Web.Views
                 numbersCollectionView.StartDisappearAnimation(600);
                 operatorsCollectionView.StartDisappearAnimation(600);
                 Window.SetTimeout(viewModel.NewGame, 1000);
+            }
+
+            if (helpView != null)
+            {
+                helpView.ClearTooltips();
             }
         }
 

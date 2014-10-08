@@ -9,9 +9,9 @@ namespace Numbers.Web.Views
 {
     public class NumbersCollectionView : Control
     {
-        private const int NumberWidth = 80;
-        private const int NumberMargin = 8;
-        private const int NumbersCollectionWidth = 600;
+        public const int NumberWidth = 80;
+        public const int NumberMargin = 8;
+        public const int NumbersCollectionWidth = 600;
 
         private ConvertedObservableCollection<NumberViewModel, Button> numbersButtons;
 
