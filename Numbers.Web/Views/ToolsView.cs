@@ -43,20 +43,32 @@ namespace Numbers.Web.Views
         public const int Width = 296;
         public const int Height = 32;
 
+        private string gameHash;
+        public string GameHash
+        {
+            get { return gameHash; }
+            set
+            {
+                gameHash = value;
+                permalinkElement.SetAttribute("href", AppendHash(Window.Location.Href, gameHash));
+            }
+        }
+
         private IDialogContainer dialogContainer;
         private Statistics statistics;
+
+        private Element permalinkElement;
         private Control aboutDialog;
         private Control shareDialog;
 
-        public ToolsView(IDialogContainer dialogContainer, Statistics statistics, string gameHash) :
+        public ToolsView(IDialogContainer dialogContainer, Statistics statistics) :
             base("tools-panel")
         {
             this.dialogContainer = dialogContainer;
             this.statistics = statistics;
 
-            Element permalinkElement = Document.CreateElement("a");
+            permalinkElement = Document.CreateElement("a");
             permalinkElement.ClassName = "permalink";
-            permalinkElement.SetAttribute("href", AppendHash(Window.Location.Href, gameHash));
             permalinkElement.TextContent = "permalink";
 
             Label shareLabel = new Label("share-label") { Text = "\u2764 share" };

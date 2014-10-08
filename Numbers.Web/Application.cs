@@ -62,9 +62,12 @@ namespace Numbers.Web
             statistics = new Statistics(configuration);
             statistics.ReportSessionStart();
 
+            toolsView = new ToolsView(dialogContainer, statistics);
+
             int storedGameLevel;
             gameLevel = Int32.TryParse(configuration.GetValue(GameLevelConfigurationKey), out storedGameLevel) ? storedGameLevel : DefaultLevel;
 
+            Document.Body.AppendChild(toolsView.HtmlElement);
             Document.Body.AppendChild(dialogContainer.HtmlElement);
 
             Window.AddEventListener("hashchange", e => OnHashChanged());
@@ -135,12 +138,6 @@ namespace Numbers.Web
                 gameView.Dispose();
             }
 
-            if (toolsView != null)
-            {
-                Document.Body.RemoveChild(toolsView.HtmlElement);
-                toolsView.Dispose();
-            }
-
             if (Game.ToString() != Window.Location.Hash.TrimStart('#'))
             {
                 Window.History.ReplaceState(null, Document.Title, Window.Location.Href.Substring(0, Window.Location.Href.IndexOf("#")));
@@ -153,11 +150,10 @@ namespace Numbers.Web
 
             GameViewModel gameViewModel = new GameViewModel(Game, this);
             gameView = new GameView(gameViewModel);
-            toolsView = new ToolsView(dialogContainer, statistics, Game.ToString());
+            toolsView.GameHash = Game.ToString();
             UpdateLayout();
 
             Document.Body.AppendChild(gameView.HtmlElement);
-            Document.Body.AppendChild(toolsView.HtmlElement);
 
             gameView.Run();
         }
