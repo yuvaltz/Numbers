@@ -176,7 +176,7 @@ namespace Numbers.Web.Views
             return new Control("dialog", "about")
             {
                 new Label("about-dialog-header") { Text = "Numbers" },
-                new Label("about-dialog-text") { Text = "Version 1.0" },
+                new Label("about-dialog-text") { Text = "Version 1.0.1" },
                 new Link { Text = "Source on GitHub", Href = "http://www.github.com/yuvaltz/Numbers" },
             };
         }
