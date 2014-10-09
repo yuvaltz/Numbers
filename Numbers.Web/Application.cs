@@ -90,8 +90,8 @@ namespace Numbers.Web
         {
             if (!String.IsNullOrEmpty(Window.Location.Hash))
             {
-                Game = GameFactory.CreateFromHash(Window.Location.Hash.TrimStart('#'));
                 customGame = true;
+                Game = GameFactory.CreateFromHash(Window.Location.Hash.TrimStart('#'));
             }
             else
             {
@@ -126,16 +126,17 @@ namespace Numbers.Web
                 }
             }
 
-            Game = GameFactory.CreateFromLevel(GameLevel);
+            firstTime = firstTime && customGame;
             customGame = false;
+            Game = GameFactory.CreateFromLevel(GameLevel);
         }
 
         private void OnHashChanged()
         {
             if (Game.ToString() != Window.Location.Hash.TrimStart('#'))
             {
-                Game = GameFactory.CreateFromHash(Window.Location.Hash.TrimStart('#'));
                 customGame = true;
+                Game = GameFactory.CreateFromHash(Window.Location.Hash.TrimStart('#'));
             }
         }
 
@@ -143,7 +144,6 @@ namespace Numbers.Web
         {
             if (gameView != null)
             {
-                firstTime = false;
                 Document.Body.RemoveChild(gameView.HtmlElement);
                 gameView.Dispose();
             }
@@ -159,7 +159,7 @@ namespace Numbers.Web
             Game.Solved += (sender, e) => statistics.ReportGameEnd();
 
             GameViewModel gameViewModel = new GameViewModel(Game, this);
-            gameView = new GameView(gameViewModel, firstTime);
+            gameView = new GameView(gameViewModel, firstTime && !customGame);
             toolsView.GameHash = Game.ToString();
             UpdateLayout();
 
