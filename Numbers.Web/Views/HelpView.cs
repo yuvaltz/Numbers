@@ -198,7 +198,7 @@ namespace Numbers.Web.Views
             foreach (Tooltip tooltip in tooltips)
             {
                 tooltip.StartDisappearAnimation();
-                Window.SetTimeout(() => RemoveChild(tooltip), 100);
+                Window.SetTimeout(() => RemoveChild(tooltip), Tooltip.DisappearDuration);
             }
 
             foreach (int timeout in timeouts)

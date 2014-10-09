@@ -10,6 +10,9 @@ namespace Numbers.Web.Controls
 
     public class Tooltip : Control
     {
+        public const int AppearDuration = 300;
+        public const int DisappearDuration = 400;
+
         private Direction arrowsDirection;
         private IEnumerable<Control> arrows;
         private IEnumerable<int> arrowsOffset;
@@ -54,13 +57,13 @@ namespace Numbers.Web.Controls
             appearTransition = new SequentialTransition(
                 new Keyframe(this.HtmlElement, "visibility", "visible"),
                 new ParallelTransition(
-                    new Transition(this.HtmlElement, "opacity", new DoubleValueBounds(0, 1), new TransitionTiming(300, TimingCurve.EaseIn)),
-                    new Transition(this.HtmlElement, "margin", new ValueBounds(appearMargin, "0px 0px 0px 0px"), new TransitionTiming(400, TimingCurve.EaseOut))));
+                    new Transition(this.HtmlElement, "opacity", new DoubleValueBounds(0, 1), new TransitionTiming(AppearDuration, TimingCurve.EaseIn)),
+                    new Transition(this.HtmlElement, "margin", new ValueBounds(appearMargin, "0px 0px 0px 0px"), new TransitionTiming(AppearDuration, TimingCurve.EaseOut))));
 
             disappearTransition = new SequentialTransition(
                 new ParallelTransition(
-                    new Transition(this.HtmlElement, "opacity", new DoubleValueBounds(1, 0), new TransitionTiming(200, TimingCurve.EaseOut)),
-                    new Transition(this.HtmlElement, "margin", new ValueBounds("0px 0px 0px 0px", disappearMargin), new TransitionTiming(200, TimingCurve.EaseOut))),
+                    new Transition(this.HtmlElement, "opacity", new DoubleValueBounds(1, 0), new TransitionTiming(DisappearDuration, TimingCurve.EaseOut)),
+                    new Transition(this.HtmlElement, "margin", new ValueBounds("0px 0px 0px 0px", disappearMargin), new TransitionTiming(DisappearDuration, TimingCurve.EaseOut))),
                 new Keyframe(this.HtmlElement, "visibility", "hidden"));
         }
 

@@ -115,7 +115,7 @@ namespace Numbers.Web.Views
                 {
                     RemoveChild(tooltip);
                     shareTooltipRemoved = true;
-                }, 2100);
+                }, 2000 + Tooltip.DisappearDuration);
             }
         }
 
