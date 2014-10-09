@@ -3,6 +3,7 @@ using System.Html;
 using Numbers.Web.ViewModels;
 using Numbers.Web.Views;
 using Numbers.Web.Controls;
+using System.Text.RegularExpressions;
 
 namespace Numbers.Web
 {
@@ -41,6 +42,8 @@ namespace Numbers.Web
                 OnGameChanged();
             }
         }
+
+        private static readonly Regex GameHashRegex = new Regex("^([0-9]+-)+[0-9]+$");
 
         private IConfiguration configuration;
         private DialogContainer dialogContainer;
@@ -88,10 +91,12 @@ namespace Numbers.Web
 
         private void CreateInitialGame()
         {
-            if (!String.IsNullOrEmpty(Window.Location.Hash))
+            string hash = Window.Location.Hash.TrimStart('#');
+
+            if (GameHashRegex.Exec(hash) != null)
             {
                 customGame = true;
-                Game = GameFactory.CreateFromHash(Window.Location.Hash.TrimStart('#'));
+                Game = GameFactory.CreateFromHash(hash);
             }
             else
             {
@@ -133,11 +138,22 @@ namespace Numbers.Web
 
         private void OnHashChanged()
         {
-            if (Game.ToString() != Window.Location.Hash.TrimStart('#'))
+            string hash = Window.Location.Hash.TrimStart('#');
+            RegexMatch match;
+
+            match = GameHashRegex.Exec(hash);
+            if (match != null)
             {
-                customGame = true;
-                Game = GameFactory.CreateFromHash(Window.Location.Hash.TrimStart('#'));
+                if (Game.ToString() != hash)
+                {
+                    customGame = true;
+                    Game = GameFactory.CreateFromHash(hash);
+                }
+
+                return;
             }
+
+            Console.WriteLine(String.Format("Can't parse hash \"{0}\"", hash));
         }
 
         private void OnGameChanged()
