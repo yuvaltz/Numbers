@@ -44,6 +44,7 @@ namespace Numbers.Web
         }
 
         private static readonly Regex GameHashRegex = new Regex("^([0-9]+-)+[0-9]+$");
+        private static readonly Regex SetLevelRegex = new Regex("^Level=([0-9]+)$", "i");
 
         private IConfiguration configuration;
         private DialogContainer dialogContainer;
@@ -150,6 +151,14 @@ namespace Numbers.Web
                     Game = GameFactory.CreateFromHash(hash);
                 }
 
+                return;
+            }
+
+            match = SetLevelRegex.Exec(hash);
+            if (match != null)
+            {
+                GameLevel = Math.Min(Math.Max(Int32.Parse(match[1]), EasiestLevel), HardestLevel);
+                Console.WriteLine(String.Format("Level changed to {0}", GameLevel));
                 return;
             }
 
