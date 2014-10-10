@@ -50,11 +50,9 @@ div.label.target-label
 div.label.target-solutions-label
 {
     position: absolute;
-    width: 600px;
-    opacity: 0;
-    font-size: 24px;
-    color: rgba(66, 66, 66, 0.87);
-    text-align: center;
+    right: 9px;
+    bottom: 9px;
+    font-size: 22px;
     cursor: default;
 }
 

@@ -12,44 +12,24 @@ namespace Numbers.Web.Views
         private ITransition appearAnimation;
         private ITransition disappearAnimation;
 
-        private ITransition solutionsCountAppearAnimation;
-        private ITransition solutionsCountDisappearAnimation;
-
         public TargetView(int targetValue, int solutionsCount) :
             base("target-panel")
         {
-            Control solutionsLabel = new Label("target-solutions-label") { Text = String.Format("{0} {1}", solutionsCount, solutionsCount == 1 ? "solution" : "solutions"), Top = 48 };
+            Control solutionsLabel = new Label("target-solutions-label") { Text = String.Format("{0} {1}", solutionsCount, solutionsCount == 1 ? "solution" : "solutions") };
+            solutionsLabel.HtmlElement.Style.Color = GetSolutionsCountColor(solutionsCount);
 
-            Control targetLabelContainer = new Control
-            {
-                new Label("target-label") { Text = targetValue.ToString() },
-                solutionsLabel
-            };
-
-            targetLabelContainer.HtmlElement.Style.Position = "absolute";
-            targetLabelContainer.Top = 0;
+            this.AppendChild(new Label("target-label") { Text = targetValue.ToString() });
+            this.AppendChild(solutionsLabel);
 
             appearAnimation = new ParallelTransition(
                 new Transition(HtmlElement, "top", new PixelValueBounds(336, 272), new TransitionTiming(800)),
-                new Transition(HtmlElement, "opacity", new DoubleValueBounds(0, 1), new TransitionTiming(800)));
+                new Transition(HtmlElement, "opacity", new DoubleValueBounds(0, 1), new TransitionTiming(800)),
+                new Transition(solutionsLabel.HtmlElement, "color", new ValueBounds(GetSolutionsCountColor(solutionsCount), "rgba(0, 0, 0, 0.26)"), new TransitionTiming(2000), 4000));
 
             disappearAnimation = new ParallelTransition(
                 new Transition(HtmlElement, "top", new PixelValueBounds(272, 336), new TransitionTiming(800)),
                 new Transition(HtmlElement, "opacity", new DoubleValueBounds(1, 0), new TransitionTiming(800)));
 
-            solutionsCountAppearAnimation = new ParallelTransition(
-                new Transition(targetLabelContainer.HtmlElement, "top", new PixelValueBounds(0, -24), new TransitionTiming(300, TimingCurve.EaseOut), 50, Transition.ContinuationMode.ContinueValueAndTime),
-                new Transition(solutionsLabel.HtmlElement, "opacity", new DoubleValueBounds(0, 1), new TransitionTiming(300, TimingCurve.EaseOut), 50, Transition.ContinuationMode.ContinueValueAndTime));
-
-            solutionsCountDisappearAnimation = new ParallelTransition(
-                new Transition(targetLabelContainer.HtmlElement, "top", new PixelValueBounds(-24, 0), new TransitionTiming(300, TimingCurve.EaseIn), 0, Transition.ContinuationMode.ContinueValueAndTime),
-                new Transition(solutionsLabel.HtmlElement, "opacity", new DoubleValueBounds(1, 0), new TransitionTiming(300, TimingCurve.EaseIn), 0, Transition.ContinuationMode.ContinueValueAndTime));
-
-            HtmlElement.AddEventListener("touchstart", OnTouchStart, false);
-            HtmlElement.AddEventListener("mouseenter", OnMouseEnter, false);
-            HtmlElement.AddEventListener("mouseleave", OnMouseLeave, false);
-
-            this.AppendChild(targetLabelContainer);
         }
 
         public void StartAppearAnimation()
@@ -62,22 +42,38 @@ namespace Numbers.Web.Views
             disappearAnimation.Start();
         }
 
-        public void OnMouseEnter()
+        private const int GradientStopCount = 4;
+        private static readonly int[,] GradientStopColor = new int[,]
         {
-            solutionsCountDisappearAnimation.Stop();
-            solutionsCountAppearAnimation.Start();
-        }
+            { 117, 117, 117 },
+            { 18, 199, 0 },
+            { 255, 179, 0 },
+            { 229, 28, 35 },
+        };
 
-        public void OnMouseLeave()
+        private static string GetSolutionsCountColor(int solutionsCount)
         {
-            solutionsCountAppearAnimation.Stop();
-            solutionsCountDisappearAnimation.Start();
-        }
+            double normalizedLevel = 1 - (double)Math.Min(solutionsCount, 100) / 100;
 
-        public void OnTouchStart()
-        {
-            solutionsCountAppearAnimation.Start();
-            Window.SetTimeout(solutionsCountDisappearAnimation.Start, 2000);
+            double[] weight = new double[GradientStopCount];
+            for (int i = 0; i < GradientStopCount; i++)
+            {
+                double stopPosition = (double)i / (GradientStopCount - 1);
+                weight[i] = Math.Max(0, 1 - Math.Abs(stopPosition - normalizedLevel) * (GradientStopCount - 1));
+            }
+
+            double[] color = new double[3];
+            for (int componentIndex = 0; componentIndex < 3; componentIndex++)
+            {
+                color[componentIndex] = 0;
+
+                for (int i = 0; i < GradientStopCount; i++)
+                {
+                    color[componentIndex] += weight[i] * GradientStopColor[i, componentIndex];
+                }
+            }
+
+            return String.Format("rgba({0}, {1}, {2}, 1)", (int)color[0], (int)color[1], (int)color[2]);
         }
     }
 }
