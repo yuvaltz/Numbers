@@ -77,7 +77,7 @@ namespace Numbers.Web
             List<Number> numbers = CurrentNumbers.ToList();
             numbers.Sort((number1, number2) => number1.CompareTo(number2));
 
-            Number solution = Solver.GetSolutions(numbers, TargetValue).FirstOrDefault();
+            Number solution = Solver.GetSolution(numbers, TargetValue);
 
             HintsCount++;
 

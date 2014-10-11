@@ -7,19 +7,24 @@ namespace Numbers.Web
 {
     public static class Solver
     {
-        public static IEnumerable<Number> GetSolutions(IEnumerable<Number> numbers, int targetValue)
+        public static Number GetSolution(IEnumerable<Number> numbers, int targetValue)
+        {
+            return GetTargets(numbers.ToArray(), false).Where(target => target.Value == targetValue).FirstOrDefault();
+        }
+
+        public static IEnumerable<Number> GetDistinctSolutions(IEnumerable<Number> numbers, int targetValue)
         {
             if (numbers.Distinct(new ComparableEqualityComparer<Number>()).Count() != numbers.Count())
             {
                 throw new Exception("Values are not distinct");
             }
 
-            return GetTargets(numbers.ToArray()).Where(target => target.Value == targetValue);
+            return GetTargets(numbers.ToArray(), true).Where(target => target.Value == targetValue);
         }
 
         public static int CountSolutions(IEnumerable<int> values, int targetValue)
         {
-            return GetSolutions(values.Select(Number.Create).ToArray(), targetValue).Count();
+            return GetDistinctSolutions(values.Select(Number.Create).ToArray(), targetValue).Count();
         }
 
         public static int[] CountAllSolutions(IEnumerable<int> values, int maximumTargetValue)
@@ -31,7 +36,7 @@ namespace Numbers.Web
 
             int[] solutionsCount = Array.Repeat<int>(0, maximumTargetValue);
 
-            foreach (Number target in GetTargets(values.Select(Number.Create).ToArray()))
+            foreach (Number target in GetTargets(values.Select(Number.Create).ToArray(), true))
             {
                 if (target.Value < maximumTargetValue)
                 {
@@ -43,7 +48,7 @@ namespace Numbers.Web
         }
 
 
-        private static IEnumerable<Number> GetTargets(Number[] numbers)
+        private static IEnumerable<Number> GetTargets(Number[] numbers, bool unique)
         {
             if (numbers.Length == 1)
             {
@@ -53,11 +58,11 @@ namespace Numbers.Web
 
             foreach (Tuple<Number[], Number[]> split in GetSplittedGroups(numbers))
             {
-                foreach (Number target1 in GetTargets(split.Item1))
+                foreach (Number target1 in GetTargets(split.Item1, unique))
                 {
-                    foreach (Number target2 in GetTargets(split.Item2))
+                    foreach (Number target2 in GetTargets(split.Item2, unique))
                     {
-                        foreach (Number result in GetNumbersOperations(target1, target2))
+                        foreach (Number result in GetNumbersOperations(target1, target2, unique))
                         {
                             yield return result;
                         }
@@ -78,7 +83,7 @@ namespace Numbers.Web
             }
         }
 
-        private static IEnumerable<Number> GetNumbersOperations(Number number1, Number number2)
+        private static IEnumerable<Number> GetNumbersOperations(Number number1, Number number2, bool unique)
         {
             if (number1.CompareTo(number2) < 0)
             {
@@ -91,7 +96,8 @@ namespace Numbers.Web
             // (a+b)+c, (a+b)-c, (a-b)+c, (a-b)-c (when c is not (d+e) or (d-e))
             // (a*b)*c, (a*b)/c, (a/b)*c, (a/b)/c (when c is not (d*e) or (d/e))
 
-            if ((number1.Operator != Operator.Add && number1.Operator != Operator.Subtract || number1.Operand1.CompareTo(number2) > 0 && number1.Operand2.CompareTo(number2) > 0) &&
+            if (!unique ||
+                (number1.Operator != Operator.Add && number1.Operator != Operator.Subtract || number1.Operand1.CompareTo(number2) > 0 && number1.Operand2.CompareTo(number2) > 0) &&
                 number2.Operator != Operator.Add && number2.Operator != Operator.Subtract)
             {
                 yield return Number.Add(number1, number2);
@@ -101,7 +107,8 @@ namespace Numbers.Web
                 }
             }
 
-            if ((number1.Operator != Operator.Multiply && number1.Operator != Operator.Divide || number1.Operand1.CompareTo(number2) > 0 && number1.Operand2.CompareTo(number2) > 0) &&
+            if (!unique ||
+                (number1.Operator != Operator.Multiply && number1.Operator != Operator.Divide || number1.Operand1.CompareTo(number2) > 0 && number1.Operand2.CompareTo(number2) > 0) &&
                 number2.Operator != Operator.Multiply && number2.Operator != Operator.Divide)
             {
                 yield return Number.Multiply(number1, number2);
