@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Numbers.Web.Controls
 {
@@ -10,8 +11,8 @@ namespace Numbers.Web.Controls
             set { HtmlElement.TextContent = value; }
         }
 
-        public Label(string className = String.Empty) :
-            base("label", className)
+        public Label(params string[] classesName) :
+            base(classesName.Concat(new [] { "label" }).ToArray())
         {
             //
         }
