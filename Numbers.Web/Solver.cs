@@ -42,7 +42,8 @@ namespace Numbers.Web
             return solutionsCount;
         }
 
-        private static IEnumerable<Number> GetTargets(Number[] numbers, int startIndex = 0)
+
+        private static IEnumerable<Number> GetTargets(Number[] numbers)
         {
             if (numbers.Length == 1)
             {
@@ -50,36 +51,30 @@ namespace Numbers.Web
                 yield break;
             }
 
-            Number[] newNumbers = new Number[numbers.Length - 1];
-
-            for (int i = 0; i < numbers.Length - 1; i++)
+            foreach (Tuple<Number[], Number[]> split in GetSplittedGroups(numbers))
             {
-                for (int j = i + 1; j < numbers.Length; j++)
+                foreach (Number target1 in GetTargets(split.Item1))
                 {
-                    // combinations of [i,j] below startIndex have already been checked earlier in the recursion
-                    // except [i,j=last] (because the last number is a new result which only exists in the current iteration)
-                    if (i < startIndex && j < numbers.Length - 1)
+                    foreach (Number target2 in GetTargets(split.Item2))
                     {
-                        continue;
-                    }
-
-                    CopyPartialArray(numbers, ref newNumbers, i, j);
-
-                    foreach (Number nextNumber in GetNumbersOperations(numbers[i], numbers[j]))
-                    {
-                        if (nextNumber == null)
+                        foreach (Number result in GetNumbersOperations(target1, target2))
                         {
-                            continue;
-                        }
-
-                        newNumbers[newNumbers.Length - 1] = nextNumber;
-
-                        foreach (Number target in GetTargets(newNumbers, Math.Max(startIndex, i)))
-                        {
-                            yield return target;
+                            yield return result;
                         }
                     }
                 }
+            }
+        }
+
+        private static IEnumerable<Tuple<T[], T[]>> GetSplittedGroups<T>(T[] items)
+        {
+            int count = 1 << (items.Length - 1);
+
+            for (int split = 1; split < count; split++)
+            {
+                yield return Tuple.Create(
+                    items.Where((item, i) => ((split >> i) & 1) == 0).ToArray(),
+                    items.Where((item, i) => ((split >> i) & 1) == 1).ToArray());
             }
         }
 
@@ -112,7 +107,11 @@ namespace Numbers.Web
                 yield return Number.Multiply(number1, number2);
                 if (number2.Value != 1)
                 {
-                    yield return Number.Divide(number1, number2);
+                    Number result = Number.Divide(number1, number2);
+                    if (result != null)
+                    {
+                        yield return result;
+                    }
                 }
             }
         }
@@ -135,21 +134,6 @@ namespace Numbers.Web
             }
 
             return FindInitialOperation(target.Operand1, initialNumbers) ?? FindInitialOperation(target.Operand2, initialNumbers);
-        }
-
-        private static void CopyPartialArray<T>(T[] source, ref T[] target, params int[] excludeIndexes)
-        {
-            int resultIndex = 0;
-            for (int i = 0; i < source.Length; i++)
-            {
-                if (excludeIndexes.Contains(i))
-                {
-                    continue;
-                }
-
-                target[resultIndex] = source[i];
-                resultIndex++;
-            }
         }
     }
 }
