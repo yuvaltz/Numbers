@@ -35,6 +35,8 @@ namespace Numbers.Web.Views
 
             newGameButton.IsEnabled = false;
 
+            this.AppendChild(new Label("header", "background1") { Text = "Numbers" });
+            this.AppendChild(new Label("header", "background2") { Text = "Numbers" });
             this.AppendChild(new Label("header") { Text = "Numbers" });
             this.AppendChild(newGameButton);
             this.AppendChild(hintButton);

@@ -179,12 +179,28 @@ div.label.extra-small
 
 div.header
 {
+    position: absolute;
+    width: 600px;
     font-family: 'Lobster', sans-serif;
     font-size: 44px;
     line-height: 64px;
     text-align: center;
-    color: #424242;
-    opacity: 0.54;
+    color: #000000;
+    opacity: 0.36;
+}
+
+div.header.background1
+{
+    color: #000000;
+    opacity: 0.26;
+    margin: -1px 0px 0px 0px;
+}
+
+div.header.background2
+{
+    color: #ffffff;
+    opacity: 0.62;
+    margin: 1px 0px 0px 0px;
 }
 
 div.tools-panel
