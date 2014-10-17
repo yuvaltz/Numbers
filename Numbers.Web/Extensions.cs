@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Html;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Numbers.Web
@@ -92,6 +93,14 @@ namespace Numbers.Web
             }
 
             return array;
+        }
+    }
+
+    public static class DocumentExtensions
+    {
+        public static string GetMetaPropertyValue(string propertyName)
+        {
+            return Document.GetElementsByTagName("meta").ToArray().Where(element => element.GetAttribute("property") == propertyName).First().GetAttribute("content");
         }
     }
 }

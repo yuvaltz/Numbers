@@ -206,11 +206,11 @@ div.header.background2
 div.tools-panel
 {
     position: absolute;
-    right: 8px;
+    left: 16px;
+    right: 16px;
     bottom: 8px;
-    width: 296px;
     height: 32px;
-    font-size: 24px;
+    font-size: 22px;
     color: rgba(0, 0, 0, 0.26);
     line-height: 30px;
 }
@@ -218,7 +218,7 @@ div.tools-panel
 a.permalink
 {
     position: absolute;
-    left: 0px;
+    right: 168px;
     color: rgba(0, 0, 0, 0.26);
     text-decoration:none;
 }
@@ -236,7 +236,7 @@ a.permalink:hover
 div.label.share-label
 {
     position: absolute;
-    left: 120px;
+    right: 72px;
     cursor: pointer;
     color: #e91e63;
 }
@@ -244,8 +244,13 @@ div.label.share-label
 div.label.about-label
 {
     position: absolute;
-    left: 224px;
+    right: 0px;
     cursor: pointer;
+}
+
+div.fb-like
+{
+    position: absolute;
 }
 
 div.dialog-container
@@ -257,6 +262,7 @@ div.dialog-container
     top: 0px;
     bottom: 0px;
     background: rgba(0, 0, 0, 0.4);
+    font-size: 18px;
 }
 
 div.dialog

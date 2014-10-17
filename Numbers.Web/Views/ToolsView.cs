@@ -40,7 +40,6 @@ namespace Numbers.Web.Views
             new ShareService(11, "Email", "mailto:?subject={1}&body={2}%20-%20{0}"),
         };
 
-        public const int Width = 296;
         public const int Height = 32;
 
         private string gameHash;
@@ -54,10 +53,23 @@ namespace Numbers.Web.Views
             }
         }
 
+        private bool isVisible;
+        public bool IsVisible
+        {
+            get { return isVisible; }
+            set
+            {
+                isVisible = value;
+                HtmlElement.Style.Visibility = isVisible ? "visible" : "collapse";
+                likeButton.HtmlElement.Style.Display = isVisible ? "initial" : "none";
+            }
+        }
+
         private IDialogContainer dialogContainer;
         private Statistics statistics;
 
         private Element permalinkElement;
+        private Control likeButton;
         private Control aboutDialog;
         private Control shareDialog;
 
@@ -70,9 +82,18 @@ namespace Numbers.Web.Views
             this.dialogContainer = dialogContainer;
             this.statistics = statistics;
 
+            isVisible = true;
+
             permalinkElement = Document.CreateElement("a");
             permalinkElement.ClassName = "permalink";
             permalinkElement.TextContent = "permalink";
+
+            likeButton = new Control("fb-like");
+            likeButton.HtmlElement.SetAttribute("data-href", DocumentExtensions.GetMetaPropertyValue("og:url"));
+            likeButton.HtmlElement.SetAttribute("data-layout", "standard");
+            likeButton.HtmlElement.SetAttribute("data-action", "like");
+            likeButton.HtmlElement.SetAttribute("data-show-faces", "true");
+            likeButton.HtmlElement.SetAttribute("data-share", "false");
 
             Label shareLabel = new Label("share-label") { Text = "\u2764 share" };
             Label aboutLabel = new Label("about-label") { Text = "about" };
@@ -80,6 +101,7 @@ namespace Numbers.Web.Views
             shareLabel.HtmlElement.AddEventListener("mousedown", OnShareMouseDown, false);
             aboutLabel.HtmlElement.AddEventListener("mousedown", OnAboutMouseDown, false);
 
+            this.AppendChild(likeButton);
             this.HtmlElement.AppendChild(permalinkElement);
             this.AppendChild(shareLabel);
             this.AppendChild(aboutLabel);
@@ -98,7 +120,8 @@ namespace Numbers.Web.Views
             }
             else if (!shareTooltipAdded)
             {
-                Tooltip tooltip = new Tooltip("Thank you!", Direction.Bottom, 20) { Top = -48, Left = 112 };
+                Tooltip tooltip = new Tooltip("Thank you!", Direction.Bottom, 20) { Top = -48 };
+                tooltip.HtmlElement.Style.Right = "39px";
 
                 AppendChild(tooltip);
                 shareTooltipAdded = true;
@@ -131,11 +154,9 @@ namespace Numbers.Web.Views
 
         private Control CreateShareDialog()
         {
-            IEnumerable<Element> metaElements = Document.GetElementsByTagName("meta").ToArray();
-
-            string title = HttpUtility.UrlPathEncode(metaElements.Where(element => element.GetAttribute("property") == "og:title").First().GetAttribute("content"));
-            string description = HttpUtility.UrlPathEncode(metaElements.Where(element => element.GetAttribute("property") == "og:description").First().GetAttribute("content"));
-            string image = HttpUtility.UrlEncode(metaElements.Where(element => element.GetAttribute("property") == "og:image").First().GetAttribute("content"));
+            string title = HttpUtility.UrlPathEncode(DocumentExtensions.GetMetaPropertyValue("og:title"));
+            string description = HttpUtility.UrlPathEncode(DocumentExtensions.GetMetaPropertyValue("og:description"));
+            string image = HttpUtility.UrlEncode(DocumentExtensions.GetMetaPropertyValue("og:image"));
             string url = HttpUtility.UrlEncode("http://git.io/numbers");
 
             Control dialog = new Control("dialog", "share");

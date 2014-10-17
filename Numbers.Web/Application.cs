@@ -208,7 +208,7 @@ namespace Numbers.Web
             gameView.Left = (viewContainerWidth - GameView.Width) / 2;
             gameView.Top = (viewContainerHeight - GameView.Height) / 2;
 
-            toolsView.HtmlElement.Style.Visibility = viewContainerWidth < gameView.Left + GameView.Width + ToolsView.Width + 8 && viewContainerHeight < gameView.Top + GameView.Height + ToolsView.Height + 8 ? "collapse" : "visible";
+            toolsView.IsVisible = viewContainerHeight > gameView.Top + GameView.Height + ToolsView.Height + 8;
 
             Document.Body.Style.Width = String.Format("{0}px", viewContainerWidth);
             Document.Body.Style.Height = String.Format("{0}px", viewContainerHeight);
