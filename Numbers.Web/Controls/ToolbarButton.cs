@@ -20,19 +20,13 @@ namespace Numbers.Web.Controls
 
             IsEnabled = true;
 
-            if (WindowExtensions.IsTouchAvailable())
-            {
-                Window.AddEventListener("touchstart", OnPointerDown, false);
-                Window.AddEventListener("touchend", OnPointerUp, false);
-                Window.AddEventListener("touchmove", OnPointerMove, false);
-                Window.AddEventListener("touchcancel", OnPointerUp, false);
-            }
-            else
-            {
-                Window.AddEventListener("mousedown", OnPointerDown, false);
-                Window.AddEventListener("mouseup", OnPointerUp, false);
-                HtmlElement.AddEventListener("mouseleave", e => { if (IsPressed) { OnPointerUp(e); } }, false);
-            }
+            Window.AddEventListener("touchstart", OnPointerDown, false);
+            Window.AddEventListener("touchend", OnPointerUp, false);
+            Window.AddEventListener("touchmove", OnPointerMove, false);
+            Window.AddEventListener("touchcancel", OnPointerUp, false);
+            Window.AddEventListener("mousedown", OnPointerDown, false);
+            Window.AddEventListener("mouseup", OnPointerUp, false);
+            HtmlElement.AddEventListener("mouseleave", e => { if (IsPressed) { OnPointerUp(e); } }, false);
         }
 
         public override void Dispose()
